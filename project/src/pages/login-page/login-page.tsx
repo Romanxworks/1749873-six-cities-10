@@ -1,6 +1,6 @@
-import HeaderForLogin from '../../components/header-component/header-login';
+import HeaderForLogin from '../../components/header/header-login';
 
-function Login(): JSX.Element {
+function LoginPage(): JSX.Element {
   return (
     <div className="page page--gray page--login">
       <HeaderForLogin />
@@ -22,7 +22,7 @@ function Login(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <a className="locations__item-link" href="#">
+              <a className="locations__item-link" href="/">
                 <span>Amsterdam</span>
               </a>
             </div>
@@ -33,4 +33,4 @@ function Login(): JSX.Element {
   );
 }
 
-export default Login;
+export default LoginPage;

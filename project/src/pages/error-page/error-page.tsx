@@ -1,6 +1,7 @@
 import Header from '../../components/header/header';
+import {Link} from 'react-router-dom';
 
-function MainEmptyPage():JSX.Element{
+function ErrorPage():JSX.Element{
   return(
     <div className="page page--gray page--main">
       <Header />
@@ -47,8 +48,8 @@ function MainEmptyPage():JSX.Element{
           <div className="cities__places-container cities__places-container--empty container">
             <section className="cities__no-places">
               <div className="cities__status-wrapper tabs__content">
-                <b className="cities__status">No places to stay available</b>
-                <p className="cities__status-description">We could not find any property available at the moment in Dusseldorf</p>
+                <b className="cities__status">Page not found</b>
+                <Link className="cities__status-description" to="/"> Back to homepage </Link>
               </div>
             </section>
             <div className="cities__right-section"></div>
@@ -59,4 +60,4 @@ function MainEmptyPage():JSX.Element{
   );
 }
 
-export default MainEmptyPage;
+export default ErrorPage;
