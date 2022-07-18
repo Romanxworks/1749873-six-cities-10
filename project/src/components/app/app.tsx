@@ -25,7 +25,7 @@ function App({placesCount}:AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.Room}
-          element={<PropertyPage />}
+          element={<PropertyPage authorizationStatus={AuthorizationStatus.NoAuth}/>}
         />
         <Route
           path={AppRoute.Favorites}
