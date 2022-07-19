@@ -17,7 +17,7 @@ function App({placesCount}:AppProps): JSX.Element {
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainPage placesCount = {placesCount} />}
+          element={<MainPage placesCount = {placesCount} authorizationStatus={AuthorizationStatus.NoAuth} />}
         />
         <Route
           path={AppRoute.Login}

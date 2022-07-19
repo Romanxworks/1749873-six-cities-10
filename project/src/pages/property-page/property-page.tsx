@@ -8,6 +8,8 @@ type PropertyPageProps = {
 }
 
 function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
+  const isLogin = () => authorizationStatus === AuthorizationStatus.Auth;
+
   return(
     <div className="page">
       <header className="header">
@@ -18,7 +20,7 @@ function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
               </Link>
             </div>
-            <HeaderNavigation userName='Oliver.conner@gmail.com' userFavoriteCount={3} userStatus={false}/>
+            <HeaderNavigation userName='Oliver.conner@gmail.com' userFavoriteCount={3} userStatus={isLogin()}/>
           </div>
         </div>
       </header>

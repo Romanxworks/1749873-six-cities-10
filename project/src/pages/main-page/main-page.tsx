@@ -1,12 +1,15 @@
 import {Link} from 'react-router-dom';
 import HeaderNavigation from '../../components/header-navigation/header-navigation';
-
+import {AuthorizationStatus} from '../../const';
 
 type MainProps = {
     placesCount:number;
+    authorizationStatus: AuthorizationStatus;
 }
 
-function MainPage({placesCount}:MainProps):JSX.Element{
+function MainPage({placesCount, authorizationStatus}:MainProps):JSX.Element{
+  const isLogin = () => authorizationStatus === AuthorizationStatus.Auth;
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -17,7 +20,7 @@ function MainPage({placesCount}:MainProps):JSX.Element{
                 <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
               </Link>
             </div>
-            <HeaderNavigation userName='Oliver.conner@gmail.com' userFavoriteCount={3} userStatus={false}/>
+            <HeaderNavigation userName='Oliver.conner@gmail.com' userFavoriteCount={3} userStatus={isLogin()}/>
           </div>
         </div>
       </header>
