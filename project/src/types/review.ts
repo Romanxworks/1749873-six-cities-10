@@ -3,6 +3,6 @@ export type Review = {
     avatar: string;
     name: string;
     rating: number;
-    data: Date;
+    date: string;
     comment: string;
 };

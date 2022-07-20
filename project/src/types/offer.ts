@@ -10,7 +10,7 @@ export type Offer = {
     capacity: number;
     features: string[];
     owner: Owner;
-    rating: boolean;
+    rating: number;
     favorite: boolean;
     price: number;
     address:{
