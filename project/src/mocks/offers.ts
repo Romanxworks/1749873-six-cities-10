@@ -1,6 +1,6 @@
 import { Offer } from '../types/offer';
 
-export const Offers: Offer[] = [
+export const offers: Offer[] = [
   {
     id: 1,
     images: ['img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg'],
@@ -32,10 +32,11 @@ export const Offers: Offer[] = [
       lng: 989550,
     },
     reviews: [1],
+    premium: true,
   },
   {
     id: 2,
-    images: ['img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg'],
+    images: [ 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg','img/room.jpg'],
     title: 'Beautiful & luxurious studio at great location',
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     rating: 4.2,
@@ -64,10 +65,11 @@ export const Offers: Offer[] = [
       lng: 989550,
     },
     reviews: [2],
+    premium: true,
   },
   {
     id: 3,
-    images: ['img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-03.jpg', 'img/apartment-02.jpg', 'img/apartment-01.jpg'],
+    images: ['img/apartment-03.jpg','img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-02.jpg', 'img/apartment-01.jpg'],
     title: 'Beautiful & luxurious studio at great location',
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     rating: 4.5,
@@ -95,10 +97,11 @@ export const Offers: Offer[] = [
       lng: 989550,
     },
     reviews: [3],
+    premium: false,
   },
   {
     id: 4,
-    images: ['img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-02.jpg'],
+    images: ['img/apartment-02.jpg', 'img/room.jpg', 'img/apartment-01.jpg', ],
     title: 'Luxurious studio at great location',
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     rating: 5,
@@ -127,5 +130,6 @@ export const Offers: Offer[] = [
       lng: 989550,
     },
     reviews: [4],
+    premium: false,
   }
 ];

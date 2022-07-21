@@ -12,6 +12,7 @@ export type Offer = {
     owner: Owner;
     rating: number;
     favorite: boolean;
+    premium: boolean;
     price: number;
     address:{
         lat:number;

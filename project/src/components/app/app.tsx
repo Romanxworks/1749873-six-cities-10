@@ -6,18 +6,21 @@ import ErrorPage from '../../pages/error-page/error-page';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
+import {Offer} from '../../types/offer';
+
 
 type AppProps = {
   placesCount:number;
+  offers: Offer[],
 }
 
-function App({placesCount}:AppProps): JSX.Element {
+function App({placesCount, offers}:AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
         <Route
           path={AppRoute.Main}
-          element={<MainPage placesCount = {placesCount} authorizationStatus={AuthorizationStatus.NoAuth} />}
+          element={<MainPage placesCount = {placesCount} authorizationStatus={AuthorizationStatus.NoAuth} offers = {offers}/>}
         />
         <Route
           path={AppRoute.Login}
