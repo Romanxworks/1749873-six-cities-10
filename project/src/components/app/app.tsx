@@ -7,14 +7,15 @@ import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import {Offer} from '../../types/offer';
-
+import {Review} from '../../types/review';
 
 type AppProps = {
   placesCount:number;
   offers: Offer[],
+  reviews: Review[],
 }
 
-function App({placesCount, offers}:AppProps): JSX.Element {
+function App({placesCount, offers, reviews}:AppProps): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
@@ -28,7 +29,7 @@ function App({placesCount, offers}:AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.Room}
-          element={<PropertyPage authorizationStatus={AuthorizationStatus.NoAuth}/>}
+          element={<PropertyPage authorizationStatus={AuthorizationStatus.NoAuth} offers = {offers} reviews = {reviews}/>}
         />
         <Route
           path={AppRoute.Favorites}

@@ -2,7 +2,7 @@ import { Offer } from '../types/offer';
 
 export const offers: Offer[] = [
   {
-    id: 1,
+    id: '1',
     images: ['img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg'],
     title: 'Beautiful & luxurious studio at great location',
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
@@ -31,11 +31,11 @@ export const offers: Offer[] = [
       lat:655652,
       lng: 989550,
     },
-    reviews: [1],
+    reviews: [1,3],
     premium: true,
   },
   {
-    id: 2,
+    id: '2',
     images: [ 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg', 'img/apartment-01.jpg','img/room.jpg'],
     title: 'Beautiful & luxurious studio at great location',
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
@@ -68,8 +68,8 @@ export const offers: Offer[] = [
     premium: true,
   },
   {
-    id: 3,
-    images: ['img/apartment-03.jpg','img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-02.jpg', 'img/apartment-01.jpg'],
+    id: '3',
+    images: ['img/apartment-03.jpg','img/room.jpg', 'img/apartment-01.jpg', 'img/apartment-02.jpg', 'img/apartment-01.jpg', 'img/room.jpg',],
     title: 'Beautiful & luxurious studio at great location',
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
     rating: 4.5,
@@ -100,7 +100,7 @@ export const offers: Offer[] = [
     premium: false,
   },
   {
-    id: 4,
+    id: '4',
     images: ['img/apartment-02.jpg', 'img/room.jpg', 'img/apartment-01.jpg', ],
     title: 'Luxurious studio at great location',
     description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',

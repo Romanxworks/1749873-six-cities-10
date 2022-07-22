@@ -6,7 +6,7 @@ export const reviews: Review[] = [
     avatar: 'img/avatar-angelina.jpg',
     name: 'Willy Stocks',
     rating: 4,
-    date: '2019-04-24',
+    date: 'April 2019',
     comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.'
   },
   {
@@ -14,7 +14,7 @@ export const reviews: Review[] = [
     avatar: 'img/avatar-angelina.jpg',
     name: 'Lilly Ericsson',
     rating: 4.5,
-    date: '2019-04-24',
+    date: 'April 2019',
     comment: 'A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.'
   },
   {
@@ -22,7 +22,7 @@ export const reviews: Review[] = [
     avatar: 'img/avatar-angelina.jpg',
     name: 'Hank Moody',
     rating: 4.4,
-    date: '2019-04-24',
+    date: 'July 2019',
     comment: 'Common, a quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.'
   },
   {
@@ -30,7 +30,7 @@ export const reviews: Review[] = [
     avatar: 'img/avatar-angelina.jpg',
     name: 'Billy Stocks',
     rating: 2,
-    date: '2019-04-24',
+    date: 'May 2019',
     comment: 'Lorem ip A quiet cozy and picturesque that hides behind a a river by the unique lightness of Amsterdam. The building is green and from 18th century.'
   }
 ];
