@@ -56,7 +56,7 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
                   {offer?.title}
                 </h1>
                 <button className={`property__bookmark-button ${offer?.favorite && 'property__bookmark-button--active'} button`} type="button">
-                  <svg className="property__bookmark-icon" width="31" height="33">
+                  <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
                   <span className="visually-hidden">To bookmarks</span>

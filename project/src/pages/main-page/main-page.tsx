@@ -2,6 +2,7 @@ import {Link} from 'react-router-dom';
 import HeaderNavigation from '../../components/header-navigation/header-navigation';
 import {AuthorizationStatus} from '../../const';
 import {Offer} from '../../types/offer';
+import {useState} from 'react';
 import CitiesCard from '../../components/cities-card/cities-card';
 
 
@@ -13,6 +14,12 @@ type MainProps = {
 
 function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Element{
   const isLogin = () => authorizationStatus === AuthorizationStatus.Auth;
+  const [sortState, setSortState] = useState(false);
+
+  const sortClickHandler = () => {
+    setSortState(!sortState);
+  };
+
   return (
     <div className="page page--gray page--main">
       <header className="header">
@@ -72,13 +79,13 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
               <b className="places__found">{placesCount} places to stay in Amsterdam</b>
               <form className="places__sorting" action="#" method="get">
                 <span className="places__sorting-caption">Sort by</span>
-                <span className="places__sorting-type" tabIndex= {0}>
+                <span className="places__sorting-type" tabIndex= {0} onClick={sortClickHandler}>
               Popular
                   <svg className="places__sorting-arrow" width="7" height="4">
                     <use xlinkHref="#icon-arrow-select"></use>
                   </svg>
                 </span>
-                <ul className="places__options places__options--custom places__options--opened">
+                <ul className={`places__options places__options--custom places__options--${sortState ? 'opened' : ''}`}>
                   <li className="places__option places__option--active" tabIndex={0}>Popular</li>
                   <li className="places__option" tabIndex={0}>Price: low to high</li>
                   <li className="places__option" tabIndex={0}>Price: high to low</li>

@@ -2,13 +2,18 @@ import PremiumFlag from '../premium-flag/premium-flag';
 import {Offer} from '../../types/offer';
 import {Link} from 'react-router-dom';
 import {RATING_ADAPTER} from '../../const';
-// const RATING_ADAPTER = 0.05;
+import {useState} from 'react';
+
 
 function CitiesCard(offer:Offer):JSX.Element{
   const {images, premium, price, rating, title, type, id, favorite} = offer;
+  const [cardState] = useState(id);
+
+  const cardActiveHandle = () => (cardState);
+
 
   return(
-    <article className="cities__card place-card">
+    <article className="cities__card place-card" onMouseOver={cardActiveHandle}>
       {premium ? <PremiumFlag /> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`offer/${id}`} >

@@ -29,7 +29,7 @@ function App({placesCount, offers, reviews}:AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.Room}
-          element={<PropertyPage authorizationStatus={AuthorizationStatus.NoAuth} offers = {offers} reviews = {reviews}/>}
+          element={<PropertyPage authorizationStatus={AuthorizationStatus.Auth} offers = {offers} reviews = {reviews}/>}
         />
         <Route
           path={AppRoute.Favorites}
