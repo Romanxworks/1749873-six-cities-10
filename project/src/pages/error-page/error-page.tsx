@@ -1,11 +1,21 @@
-import Header from '../../components/header/header';
+import HeaderNavigation from '../../components/header-navigation/header-navigation';
 import {Link} from 'react-router-dom';
 
 function ErrorPage():JSX.Element{
   return(
     <div className="page page--gray page--main">
-      <Header />
-
+      <header className="header">
+        <div className="container">
+          <div className="header__wrapper">
+            <div className="header__left">
+              <Link className="header__logo-link header__logo-link--active" to="/">
+                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
+              </Link>
+            </div>
+            <HeaderNavigation userName='Oliver.conner@gmail.com' userFavoriteCount={3} userStatus={false}/>
+          </div>
+        </div>
+      </header>
       <main className="page__main page__main--index page__main--index-empty">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
