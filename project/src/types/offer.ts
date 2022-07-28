@@ -1,22 +1,32 @@
-import {Owner} from '../types/owner';
+import {User} from './user';
 
 export type Offer = {
-    id: string;
+    id: number;
     images: string[];
     title: string;
     description: string;
     type: string;
-    rooms: number;
-    capacity: number;
+    bedrooms: number;
+    maxAdults: number;
     features: string[];
-    owner: Owner;
+    host: User;
     rating: number;
-    favorite: boolean;
-    premium: boolean;
+    isFavorite: boolean;
+    isPremium: boolean;
     price: number;
-    address:{
-        lat:number;
-        lng: number;
+    location: {
+        latitude: number
+        longitude: number
+        zoom: number
     };
     reviews: number[];
+    city: {
+        location: {
+        latitude: number
+        longitude: number
+        zoom: number
+        }
+        name: string
+    };
+    previewImage: string
 }

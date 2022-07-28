@@ -1,6 +1,6 @@
 import {Link} from 'react-router-dom';
-import HeaderNavigation from '../../components/header-navigation/header-navigation';
-import {AuthorizationStatus} from '../../const';
+import Header from '../../components/header/header';
+import {AuthorizationStatus, CITIES} from '../../const';
 import {Offer} from '../../types/offer';
 import {useState} from 'react';
 import CitiesCard from '../../components/cities-card/cities-card';
@@ -13,7 +13,7 @@ type MainProps = {
 }
 
 function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Element{
-  const isLogin = () => authorizationStatus === AuthorizationStatus.Auth;
+  const isLogin = authorizationStatus === AuthorizationStatus.Auth;
   const [sortState, setSortState] = useState(false);
 
   const sortClickHandler = () => {
@@ -22,53 +22,19 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
 
   return (
     <div className="page page--gray page--main">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link className="header__logo-link header__logo-link--active" to="/">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </Link>
-            </div>
-            <HeaderNavigation userName='Oliver.conner@gmail.com' userFavoriteCount={3} userStatus={isLogin()}/>
-          </div>
-        </div>
-      </header>
+      <Header userStatus = {isLogin}/>
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
             <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="/">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
+              {CITIES.map((city) => (
+                <li className="locations__item" key={`${city}-1`}>
+                  <Link className="locations__item-link tabs__item" to ="/">
+                    <span>{city}</span>
+                  </Link>
+                </li>) )}
+
             </ul>
           </section>
         </div>

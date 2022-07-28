@@ -12,3 +12,5 @@ export enum AuthorizationStatus {
   }
 
 export const RATING_ADAPTER = 0.05;
+
+export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];

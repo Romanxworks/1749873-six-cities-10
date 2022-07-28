@@ -1,10 +1,11 @@
 import {Link, useParams} from 'react-router-dom';
-import HeaderNavigation from '../../components/header-navigation/header-navigation';
+import Header from '../../components/header/header';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {AuthorizationStatus, RATING_ADAPTER} from '../../const';
 import {Offer} from '../../types/offer';
 import ReviewOffer from '../../components/review/review';
 import {Review} from '../../types/review';
+import {useState} from 'react';
 
 
 type PropertyPageProps = {
@@ -14,24 +15,13 @@ type PropertyPageProps = {
 }
 
 function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):JSX.Element {
-  const isLogin = () => authorizationStatus === AuthorizationStatus.Auth;
+  const isLogin = authorizationStatus === AuthorizationStatus.Auth;
   const params = useParams();
-  const offer = offers.find((offerById) => offerById.id === params.id);
-
+  const offer = offers.find((offerById) => offerById.id === Number(params.id));
+  const [favorite, setFavorite] = useState(offer?.isFavorite);
   return(
     <div className="page">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link className="header__logo-link header__logo-link--active" to="/">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </Link>
-            </div>
-            <HeaderNavigation userName='Oliver.conner@gmail.com' userFavoriteCount={3} userStatus={isLogin()}/>
-          </div>
-        </div>
-      </header>
+      <Header userStatus = {isLogin}/>
 
       <main className="page__main page__main--property">
         <section className="property">
@@ -50,12 +40,12 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
           </div>
           <div className="property__container container">
             <div className="property__wrapper">
-              {offer?.premium && <div className="property__mark"><span>Premium</span></div>}
+              {offer?.isPremium && <div className="property__mark"><span>Premium</span></div>}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
                   {offer?.title}
                 </h1>
-                <button className={`property__bookmark-button ${offer?.favorite && 'property__bookmark-button--active'} button`} type="button">
+                <button className={`property__bookmark-button ${favorite && 'property__bookmark-button--active'} button`} type="button" onClick={()=>setFavorite(!favorite)}>
                   <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -74,10 +64,10 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
                   {offer?.type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {offer?.rooms} Bedrooms
+                  {offer?.bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                 Max {offer?.capacity} adults
+                 Max {offer?.maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
@@ -103,12 +93,12 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src={offer?.owner.avatar} width="74" height="74" alt="Host avatar"/>
+                    <img className="property__avatar user__avatar" src={offer?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="property__user-name">
-                    {offer?.owner.name}
+                    {offer?.host.name}
                   </span>
-                  {offer?.owner.status && <span className="property__user-status">Pro</span>}
+                  {offer?.host.isPro && <span className="property__user-status">Pro</span>}
                 </div>
                 <div className="property__description">
                   <p className="property__text">
@@ -134,9 +124,9 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
             <div className="near-places__list places__list">
               <article className="near-places__card place-card">
                 <div className="near-places__image-wrapper place-card__image-wrapper">
-                  <a href="/">
+                  <Link to ="/">
                     <img className="place-card__image" src="img/room.jpg" width="260" height="200" alt="Place"/>
-                  </a>
+                  </Link>
                 </div>
                 <div className="place-card__info">
                   <div className="place-card__price-wrapper">
