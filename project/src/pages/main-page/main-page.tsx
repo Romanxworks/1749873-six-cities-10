@@ -1,10 +1,9 @@
-import {Link} from 'react-router-dom';
 import Header from '../../components/header/header';
-import {AuthorizationStatus, CITIES} from '../../const';
+import {AuthorizationStatus} from '../../const';
 import {Offer} from '../../types/offer';
 import {useState} from 'react';
 import CitiesCard from '../../components/cities-card/cities-card';
-
+import Location from '../../components/location/location';
 
 type MainProps = {
     placesCount:number;
@@ -22,20 +21,12 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
 
   return (
     <div className="page page--gray page--main">
-      <Header userStatus = {isLogin}/>
+      <Header userStatus = {isLogin} />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              {CITIES.map((city) => (
-                <li className="locations__item" key={`${city}-1`}>
-                  <Link className="locations__item-link tabs__item" to ="/">
-                    <span>{city}</span>
-                  </Link>
-                </li>) )}
-
-            </ul>
+            <Location />
           </section>
         </div>
         <div className="cities">

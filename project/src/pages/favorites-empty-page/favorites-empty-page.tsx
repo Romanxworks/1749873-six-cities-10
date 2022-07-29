@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 function FavoritesEmptyPage():JSX.Element{
   return(
     <div className="page page--favorites-empty">
-      <Header userStatus/>
+      <Header userStatus />
 
       <main className="page__main page__main--favorites page__main--favorites-empty">
         <div className="page__favorites-container container">
