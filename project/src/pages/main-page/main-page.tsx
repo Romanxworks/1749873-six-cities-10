@@ -4,6 +4,8 @@ import {Offer} from '../../types/offer';
 import {useState} from 'react';
 import CitiesCard from '../../components/cities-card/cities-card';
 import Location from '../../components/location/location';
+import Map from '../../components/map/map';
+import {CITY} from '../../mocks/city';
 
 type MainProps = {
     placesCount:number;
@@ -54,7 +56,9 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map city = {CITY} offers = {offers}/>
+              </section>
             </div>
           </div>
         </div>
