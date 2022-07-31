@@ -1,10 +1,11 @@
-import {Link} from 'react-router-dom';
-import HeaderNavigation from '../../components/header-navigation/header-navigation';
+import Header from '../../components/header/header';
 import {AuthorizationStatus} from '../../const';
 import {Offer} from '../../types/offer';
 import {useState} from 'react';
 import CitiesCard from '../../components/cities-card/cities-card';
-
+import Location from '../../components/location/location';
+import Map from '../../components/map/map';
+import {CITY} from '../../mocks/city';
 
 type MainProps = {
     placesCount:number;
@@ -13,63 +14,31 @@ type MainProps = {
 }
 
 function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Element{
-  const isLogin = () => authorizationStatus === AuthorizationStatus.Auth;
+  const isLogin = authorizationStatus === AuthorizationStatus.Auth;
   const [sortState, setSortState] = useState(false);
 
   const sortClickHandler = () => {
     setSortState(!sortState);
   };
 
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
+    undefined
+  );
+
+  const onCardHover = (cardOfferId: number) => {
+    const currentOffer = offers.find((offer) => offer.id === cardOfferId);
+
+    setSelectedOffer(currentOffer);
+  };
+
   return (
     <div className="page page--gray page--main">
-      <header className="header">
-        <div className="container">
-          <div className="header__wrapper">
-            <div className="header__left">
-              <Link className="header__logo-link header__logo-link--active" to="/">
-                <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-              </Link>
-            </div>
-            <HeaderNavigation userName='Oliver.conner@gmail.com' userFavoriteCount={3} userStatus={isLogin()}/>
-          </div>
-        </div>
-      </header>
+      <Header userStatus = {isLogin} />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <ul className="locations__list tabs__list">
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Paris</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Cologne</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Brussels</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item tabs__item--active" href="/">
-                  <span>Amsterdam</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Hamburg</span>
-                </a>
-              </li>
-              <li className="locations__item">
-                <a className="locations__item-link tabs__item" href="/">
-                  <span>Dusseldorf</span>
-                </a>
-              </li>
-            </ul>
+            <Location />
           </section>
         </div>
         <div className="cities">
@@ -93,11 +62,13 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {offers.map((offer) => (<CitiesCard {...offer} key={offer.id} />))}
+                {offers.map((offer) => (<CitiesCard offer={offer} onCardHover ={onCardHover} key={offer.id} />))}
               </div>
             </section>
             <div className="cities__right-section">
-              <section className="cities__map map"></section>
+              <section className="cities__map map">
+                <Map city = {CITY} offers = {offers} selectedOffer = {selectedOffer}/>
+              </section>
             </div>
           </div>
         </div>
