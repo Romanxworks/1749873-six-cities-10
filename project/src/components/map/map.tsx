@@ -1,9 +1,8 @@
 import {useRef, useEffect} from 'react';
-// import leaflet from 'leaflet';
 import {Icon, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
-import {URL_MARKER_DEFAULT} from '../../const';
+import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
 import {City}from '../../types/map';
 import {Offer} from '../../types/offer';
 
@@ -11,7 +10,7 @@ import {Offer} from '../../types/offer';
 type MapProps = {
   city: City;
   offers: Offer[];
-  // selectedPoint: Point | undefined;
+  selectedOffer: Offer | undefined;
 };
 
 const defaultCustomIcon = new Icon({
@@ -20,13 +19,13 @@ const defaultCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-// const currentCustomIcon = new Icon({
-//   iconUrl: URL_MARKER_CURRENT,
-//   iconSize: [40, 40],
-//   iconAnchor: [20, 40]
-// });
+const currentCustomIcon = new Icon({
+  iconUrl: URL_MARKER_CURRENT,
+  iconSize: [40, 40],
+  iconAnchor: [20, 40]
+});
 
-function Map({city, offers}:MapProps):JSX.Element{
+function Map({city, offers, selectedOffer}:MapProps):JSX.Element{
   const mapRef = useRef(null);
   const map = useMap(mapRef, city);
   useEffect(() => {
@@ -38,12 +37,14 @@ function Map({city, offers}:MapProps):JSX.Element{
         });
 
         marker
-          .setIcon( defaultCustomIcon
+          .setIcon( selectedOffer !== undefined && offer.id === selectedOffer.id
+            ? currentCustomIcon
+            : defaultCustomIcon
           )
           .addTo(map);
       });
     }
-  }, [map, offers]);
+  }, [map, offers, selectedOffer]);
 
   return (
     <div

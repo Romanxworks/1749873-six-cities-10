@@ -4,12 +4,17 @@ import {Link} from 'react-router-dom';
 import {RATING_ADAPTER} from '../../const';
 import {useState} from 'react';
 
+type CitiesCardProps = {
+  offer: Offer;
+  onCardHover: (idCard: number) => void;
+};
 
-function CitiesCard(offer:Offer):JSX.Element{
+
+function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
   const {previewImage, isPremium, price, rating, title, type, id, isFavorite} = offer;
   const [cardState] = useState(id);
   const [favorite, setFavorite] = useState(isFavorite);
-  const cardActiveHandle = () => (cardState);
+  const cardActiveHandle = () => (onCardHover(cardState));
 
 
   return(

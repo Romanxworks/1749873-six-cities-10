@@ -21,6 +21,16 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
     setSortState(!sortState);
   };
 
+  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
+    undefined
+  );
+
+  const onCardHover = (cardOfferId: number) => {
+    const currentOffer = offers.find((offer) => offer.id === cardOfferId);
+
+    setSelectedOffer(currentOffer);
+  };
+
   return (
     <div className="page page--gray page--main">
       <Header userStatus = {isLogin} />
@@ -52,12 +62,12 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
                 </ul>
               </form>
               <div className="cities__places-list places__list tabs__content">
-                {offers.map((offer) => (<CitiesCard {...offer} key={offer.id} />))}
+                {offers.map((offer) => (<CitiesCard offer={offer} onCardHover ={onCardHover} key={offer.id} />))}
               </div>
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city = {CITY} offers = {offers}/>
+                <Map city = {CITY} offers = {offers} selectedOffer = {selectedOffer}/>
               </section>
             </div>
           </div>
