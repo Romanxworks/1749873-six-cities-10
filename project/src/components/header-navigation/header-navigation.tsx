@@ -16,7 +16,7 @@ function HeaderNavigation ({user, userFavoriteCount, userStatus}:HeaderNavigatio
         {userStatus && <UserInfo user={user} userFavoriteCount = {userFavoriteCount}/>}
 
         <li className="header__nav-item">
-          <Link className="header__nav-link" to="/">
+          <Link className="header__nav-link" to="/login">
             {!userStatus && <div className="header__avatar-wrapper user__avatar-wrapper"></div>}
             <span className="header__signout">{userStatus ? 'Sign out' : 'Sign in'}</span>
           </Link>
