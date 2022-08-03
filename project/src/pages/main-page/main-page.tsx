@@ -20,9 +20,7 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
     setSortState(!sortState);
   };
 
-  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(
-    undefined
-  );
+  const [selectedOffer, setSelectedOffer] = useState<Offer>();
 
   const onCardHover = (cardOfferId: number) => {
     const currentOffer = offers.find((offer) => offer.id === cardOfferId);
