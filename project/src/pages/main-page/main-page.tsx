@@ -14,7 +14,6 @@ type MainProps = {
 }
 
 function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Element{
-  const isLogin = authorizationStatus === AuthorizationStatus.Auth;
   const [sortState, setSortState] = useState(false);
 
   const sortClickHandler = () => {
@@ -33,7 +32,7 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
 
   return (
     <div className="page page--gray page--main">
-      <Header userStatus = {isLogin} />
+      <Header />
       <main className="page__main page__main--index">
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
@@ -67,7 +66,7 @@ function MainPage({placesCount, authorizationStatus, offers}:MainProps):JSX.Elem
             </section>
             <div className="cities__right-section">
               <section className="cities__map map">
-                <Map city = {CITY} offers = {offers} selectedOffer = {selectedOffer}/>
+                <Map city = {CITY} offers = {offers} containerHeigth ='800' selectedOffer = {selectedOffer}/>
               </section>
             </div>
           </div>

@@ -5,7 +5,7 @@ import {CITIES} from '../../const';
 function MainEmptyPage():JSX.Element{
   return(
     <div className="page page--gray page--main">
-      <Header userStatus />
+      <Header />
 
       <main className="page__main page__main--index page__main--index-empty">
         <h1 className="visually-hidden">Cities</h1>

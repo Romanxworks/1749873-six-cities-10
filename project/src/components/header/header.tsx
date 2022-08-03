@@ -9,14 +9,13 @@ const user = {
   id: 1,
   isPro: false,
   name: 'Willy Stocks',
-  token: 'T2xpdmVyLmNvbm5lckBnbWFpbC5jb20='
+  token: 'T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=',
+  loginStatus: true,
+  favoritePoint:3
 };
 
-type HeaderProps = {
-    userStatus:boolean,
-}
 
-function Header ({userStatus}:HeaderProps):JSX.Element{
+function Header ():JSX.Element{
   const location = useLocation();
   const isLoginPage = location.pathname === AppRoute.Login;
   return(
@@ -28,7 +27,7 @@ function Header ({userStatus}:HeaderProps):JSX.Element{
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
             </Link>
           </div>
-          {!isLoginPage && <HeaderNavigation user = {user} userFavoriteCount={3} userStatus={userStatus}/>}
+          {!isLoginPage && <HeaderNavigation user = {user} />}
         </div>
       </div>
     </header>

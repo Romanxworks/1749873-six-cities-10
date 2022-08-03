@@ -4,21 +4,19 @@ import {Link} from 'react-router-dom';
 
 type HeaderNavigationProps = {
     user:User;
-    userFavoriteCount: number;
-    userStatus:boolean;
 }
 
-function HeaderNavigation ({user, userFavoriteCount, userStatus}:HeaderNavigationProps):JSX.Element{
+function HeaderNavigation ({user}:HeaderNavigationProps):JSX.Element{
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
 
-        {userStatus && <UserInfo user={user} userFavoriteCount = {userFavoriteCount}/>}
+        {user.loginStatus && <UserInfo user = {user}/>}
 
         <li className="header__nav-item">
           <Link className="header__nav-link" to="/login">
-            {!userStatus && <div className="header__avatar-wrapper user__avatar-wrapper"></div>}
-            <span className="header__signout">{userStatus ? 'Sign out' : 'Sign in'}</span>
+            {!user.loginStatus && <div className="header__avatar-wrapper user__avatar-wrapper"></div>}
+            <span className="header__signout">{user.loginStatus ? 'Sign out' : 'Sign in'}</span>
           </Link>
         </li>
       </ul>
