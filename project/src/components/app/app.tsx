@@ -29,13 +29,13 @@ function App({placesCount, offers, reviews}:AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.Room}
-          element={<PropertyPage authorizationStatus={AuthorizationStatus.Auth} offers = {offers} reviews = {reviews}/>}
+          element={<PropertyPage authorizationStatus = {AuthorizationStatus.Auth} offers = {offers} reviews = {reviews}/>}
         />
         <Route
           path={AppRoute.Favorites}
           element={
             <PrivateRoute
-              authorizationStatus={AuthorizationStatus.Auth}
+              authorizationStatus = {AuthorizationStatus.Auth}
             >
               <FavoritesPage />
             </PrivateRoute>
@@ -43,7 +43,7 @@ function App({placesCount, offers, reviews}:AppProps): JSX.Element {
         />
         <Route
           path="*"
-          element={<ErrorPage />}
+          element = {<ErrorPage />}
         />
       </Routes>
     </BrowserRouter>

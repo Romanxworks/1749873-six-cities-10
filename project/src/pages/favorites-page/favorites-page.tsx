@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 function FavoritesPage():JSX.Element{
   return(
     <div className="page">
-      <Header userStatus />
+      <Header />
       <main className="page__main page__main--favorites">
         <div className="page__favorites-container container">
           <section className="favorites">

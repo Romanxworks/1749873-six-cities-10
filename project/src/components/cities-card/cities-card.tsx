@@ -18,11 +18,11 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
 
 
   return(
-    <article className="cities__card place-card" onMouseOver={cardActiveHandle}>
+    <article className="cities__card place-card" onMouseEnter={cardActiveHandle}>
       {isPremium ? <PremiumFlag /> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`offer/${id}`} >
-          <img className="place-card__image" src={previewImage} width="260" height="200" alt="Place" />
+        <Link to={`../offer/${id}`} >
+          <img className="place-card__image" src = {previewImage} width="260" height="200" alt="Place" />
         </Link>
       </div>
       <div className="place-card__info">
@@ -31,7 +31,7 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
             <b className="place-card__price-value">{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className= {`place-card__bookmark-button ${favorite && 'place-card__bookmark-button--active'} button`} type="button" onClick={()=>setFavorite(!favorite)}>
+          <button className= {`place-card__bookmark-button ${favorite && 'place-card__bookmark-button--active'} button`} type="button" onClick={() => setFavorite(!favorite)}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

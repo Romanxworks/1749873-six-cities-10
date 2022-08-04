@@ -4,5 +4,7 @@ export type User = {
   email?: string
   avatarUrl: string;
   isPro: boolean;
-  token?: string
+  token?: string;
+  loginStatus?: boolean;
+  favoritePoint?: number;
 }
