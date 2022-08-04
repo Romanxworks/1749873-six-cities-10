@@ -5,7 +5,7 @@ import {AuthorizationStatus, RATING_ADAPTER} from '../../const';
 import {Offer} from '../../types/offer';
 import ReviewOffer from '../../components/review/review';
 import {Review} from '../../types/review';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
 
@@ -21,14 +21,15 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
   const offerById = offers.find((offer) => offer.id === Number(params.id));
   const restOffers = offers.filter((offer) => offer.id !== Number(params.id));
   const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
-
+  useEffect(()=>{
+    setFavorite(offerById?.isFavorite);
+  }, [offerById?.isFavorite]);
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(offerById);
   const onCardHover = (cardOfferId: number) => {
     const currentOffer = offers.find((offer) => offer.id === cardOfferId);
 
     setSelectedOffer(currentOffer);
   };
-
 
   return(
     <div className="page">
@@ -128,7 +129,7 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
             </div>
           </div>
           <section className="property__map map">
-            { offerById && <Map city = {offerById.city} offers = {offers} selectedOffer = {selectedOffer} containerHeigth = '600'/>}
+            { offerById && <Map city = {offerById.city} offers = {offers} selectedOffer = {selectedOffer} containerHeigth = {600}/>}
           </section>
         </section>
         <div className="container">
