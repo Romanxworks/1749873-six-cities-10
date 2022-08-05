@@ -12,9 +12,12 @@ type CitiesCardProps = {
 
 function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
   const {previewImage, isPremium, price, rating, title, type, id, isFavorite} = offer;
+
   const [cardState] = useState(id);
-  const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
   const cardActiveHandle = () => (onCardHover(cardState));
+
+  const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
+
   const onClickLink = () => window.scrollTo({
     top: 0
   });

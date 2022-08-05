@@ -20,11 +20,14 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
   const params = useParams();
   const offerById = offers.find((offer) => offer.id === Number(params.id));
   const restOffers = offers.filter((offer) => offer.id !== Number(params.id));
+
   const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
   useEffect(()=>{
     setFavorite(offerById?.isFavorite);
   }, [offerById?.isFavorite]);
+
   const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(offerById);
+
   const onCardHover = (cardOfferId: number) => {
     const currentOffer = offers.find((offer) => offer.id === cardOfferId);
 
