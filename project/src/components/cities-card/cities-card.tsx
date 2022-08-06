@@ -23,7 +23,7 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
   });
 
   return(
-    <article className="cities__card place-card" onMouseEnter={cardActiveHandle}>
+    <article className="cities__card place-card" onMouseEnter = {cardActiveHandle}>
       {isPremium ? <PremiumFlag /> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`} onClick = {onClickLink} >
@@ -36,7 +36,7 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
             <b className="place-card__price-value">{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className= {`place-card__bookmark-button ${isFavoriteState && 'place-card__bookmark-button--active'} button`} type="button" onClick={() => setIsFavoriteState(!isFavoriteState)}>
+          <button className= {`place-card__bookmark-button ${isFavoriteState && 'place-card__bookmark-button--active'} button`} type="button" onClick = {() => setIsFavoriteState(!isFavoriteState)}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>

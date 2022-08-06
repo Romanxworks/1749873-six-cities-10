@@ -49,7 +49,7 @@ function Map({city, offers, selectedOffer, containerHeigth}:MapProps):JSX.Elemen
 
   return (
     <div
-      style={{height: `${containerHeigth}px`}} ref={mapRef}
+      style = {{height: `${containerHeigth}px`}} ref = {mapRef}
     >
     </div>
   );

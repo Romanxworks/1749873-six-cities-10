@@ -22,7 +22,7 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
   const restOffers = offers.filter((offer) => offer.id !== Number(params.id));
 
   const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
-  useEffect(()=>{
+  useEffect(() => {
     setFavorite(offerById?.isFavorite);
   }, [offerById?.isFavorite]);
 
@@ -46,7 +46,7 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
                 const keyValue = `o-${image}-${id}`;
                 return(
                   <div key={keyValue} className="property__image-wrapper">
-                    <img className="property__image" src={image} alt={offerById.type}/>
+                    <img className="property__image" src = {image} alt = {offerById.type}/>
                   </div>
                 );
               })}
@@ -60,7 +60,7 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
                 <h1 className="property__name">
                   {offerById?.title}
                 </h1>
-                <button className={`property__bookmark-button ${isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick={()=>setFavorite(!isFavorite)}>
+                <button className={`property__bookmark-button ${isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {() => setFavorite(!isFavorite)}>
                   <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -108,7 +108,7 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
                 <h2 className="property__host-title">Meet the host</h2>
                 <div className="property__host-user user">
                   <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src={offerById?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
+                    <img className="property__avatar user__avatar" src = {offerById?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
                   </div>
                   <span className="property__user-name">
                     {offerById?.host.name}
@@ -139,7 +139,7 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {restOffers.map((offer) => (<CitiesCard offer={offer} onCardHover ={onCardHover} key={offer.id} />))}
+              {restOffers.map((offer) => (<CitiesCard offer = {offer} onCardHover = {onCardHover} key = {offer.id} />))}
             </div>
           </section>
         </div>
