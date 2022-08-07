@@ -1,5 +1,4 @@
 import {Link} from 'react-router-dom';
-// import {CITIES} from '../../const';
 import {CITY} from '../../mocks/city';
 import {City} from '../../types/map';
 
