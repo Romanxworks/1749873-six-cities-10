@@ -4,14 +4,11 @@ import {useState} from 'react';
 import CitiesCard from '../../components/cities-card/cities-card';
 import Location from '../../components/location/location';
 import Map from '../../components/map/map';
-// import {CITY} from '../../mocks/city';
 import {City} from '../../types/map';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {changeCity, getOffers} from '../../store/action';
 import MainEmpty from '../../components/main-empty/main-empty';
-// type MainProps = {
-//     offers: Offer[]
-// }
+
 
 function MainPage():JSX.Element{
 
@@ -21,7 +18,6 @@ function MainPage():JSX.Element{
   const isOffers = offers.length === 0;
 
   const [sortState, setSortState] = useState(false);
-
   const sortClickHandler = () => {
     setSortState(!sortState);
   };
@@ -38,7 +34,6 @@ function MainPage():JSX.Element{
     dispatch(changeCity(cityName));
     dispatch(getOffers(cityName));
   };
-
 
   return (
     <div className="page page--gray page--main">

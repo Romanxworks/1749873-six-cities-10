@@ -3,9 +3,12 @@ import {CITY} from '../mocks/city';
 import {offers} from '../mocks/offers';
 import {changeCity, getOffers} from '../store/action';
 
+const getOfferByCity = () => offers.filter((offer)=>offer.city.name === CITY[0].name );
+const offerByCity = getOfferByCity();
+
 const initialState = {
   city: CITY[0],
-  offers:offers
+  offers: offerByCity
 };
 
 const reducer = createReducer(initialState, (builder) => {
