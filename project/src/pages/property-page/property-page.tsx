@@ -19,7 +19,7 @@ type PropertyPageProps = {
 function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):JSX.Element {
   const params = useParams();
   const offerById = offers.find((offer) => offer.id === Number(params.id));
-  const restOffers = offers.filter((offer) => offer.id !== Number(params.id));
+  const restOffers = offers.filter((offer) => offer.id !== Number(params.id)).slice(0,3);
 
   const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
   useEffect(() => {
@@ -132,7 +132,7 @@ function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):
             </div>
           </div>
           <section className="property__map map">
-            { offerById && <Map city = {offerById.city} offers = {offers} selectedOffer = {selectedOffer} containerHeigth = {600}/>}
+            { offerById && <Map selectedOffer = {selectedOffer} containerHeigth = {600}/>}
           </section>
         </section>
         <div className="container">
