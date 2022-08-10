@@ -4,22 +4,22 @@ import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {AuthorizationStatus, RATING_ADAPTER} from '../../const';
 import {Offer} from '../../types/offer';
 import ReviewOffer from '../../components/review/review';
-import {Review} from '../../types/review';
 import {useState, useEffect} from 'react';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
+import {useAppSelector} from '../../hooks';
 
 
 type PropertyPageProps = {
   authorizationStatus: AuthorizationStatus;
-  offers: Offer[];
-  reviews: Review[];
 }
 
-function PropertyPage({authorizationStatus, offers, reviews}:PropertyPageProps):JSX.Element {
+function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
   const params = useParams();
+  const offers = useAppSelector((state) => (state.offers));
+  const reviews = useAppSelector((state) => (state.reviews));
   const offerById = offers.find((offer) => offer.id === Number(params.id));
-  const restOffers = offers.filter((offer) => offer.id !== Number(params.id)).slice(0,3);
+  const restOffers = offers.filter((offer) => offer.id !== Number(params.id));
 
   const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
   useEffect(() => {

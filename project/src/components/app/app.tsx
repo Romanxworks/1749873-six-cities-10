@@ -6,15 +6,8 @@ import ErrorPage from '../../pages/error-page/error-page';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
-import {Offer} from '../../types/offer';
-import {Review} from '../../types/review';
 
-type AppProps = {
-  offers: Offer[],
-  reviews: Review[],
-}
-
-function App({offers, reviews}:AppProps): JSX.Element {
+function App(): JSX.Element {
   return (
     <BrowserRouter>
       <Routes>
@@ -28,7 +21,7 @@ function App({offers, reviews}:AppProps): JSX.Element {
         />
         <Route
           path={AppRoute.Room}
-          element={<PropertyPage authorizationStatus = {AuthorizationStatus.Auth} offers = {offers} reviews = {reviews}/>}
+          element={<PropertyPage authorizationStatus = {AuthorizationStatus.Auth}/>}
         />
         <Route
           path={AppRoute.Favorites}
