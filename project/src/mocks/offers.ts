@@ -171,5 +171,48 @@ export const offers: Offer[] = [
       name: 'Amsterdam'
     },
     previewImage: 'img/apartment-03.jpg',
+  },
+  {
+    id: 5,
+    images: ['img/apartment-01.jpg', 'img/room.jpg', 'img/apartment-03.jpg', ],
+    title: 'What? studio at great location',
+    description: 'An independent House, strategically located between Rembrand Square and National Opera, but where the bustle of the city comes to rest in this alley flowery and colorful.',
+    rating: 5,
+    type: 'Room',
+    bedrooms: 5,
+    maxAdults: 10,
+    features: ['Wi-Fi',
+      'Washing machine',
+      'Towels',
+      'Heating',
+      'Coffee machine',
+      'Baby seat',
+      'Kitchen',
+      'Dishwasher'
+    ],
+    host: {
+      id: 4,
+      name: 'Willy Gesks',
+      avatarUrl: 'img/avatar-angelina.jpg',
+      isPro: true,
+    },
+    isFavorite: false,
+    price: 280,
+    location:{
+      latitude: 48.928153167016504,
+      longitude: 2.3602009013393954,
+      zoom:8
+    },
+    reviews: [4],
+    isPremium: false,
+    city: {
+      location: {
+        latitude: 48.85341,
+        longitude: 2.3488,
+        zoom: 10
+      },
+      name: 'Paris'
+    },
+    previewImage: 'img/apartment-02.jpg',
   }
 ];

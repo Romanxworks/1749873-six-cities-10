@@ -2,14 +2,12 @@ import {useRef, useEffect} from 'react';
 import {Icon, Marker} from 'leaflet';
 import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
+import {useAppSelector} from '../../hooks';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
-import {City}from '../../types/map';
 import {Offer} from '../../types/offer';
 
 
 type MapProps = {
-  city: City;
-  offers: Offer[];
   selectedOffer: Offer | undefined;
   containerHeigth: number;
 };
@@ -26,8 +24,10 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({city, offers, selectedOffer, containerHeigth}:MapProps):JSX.Element{
+function Map({selectedOffer, containerHeigth}:MapProps):JSX.Element{
   const mapRef = useRef(null);
+  const city = useAppSelector((state) => state.city);
+  const offers = useAppSelector((state) => (state.offers));
   const map = useMap(mapRef, city);
   useEffect(() => {
     if (map) {
@@ -45,7 +45,7 @@ function Map({city, offers, selectedOffer, containerHeigth}:MapProps):JSX.Elemen
           .addTo(map);
       });
     }
-  }, [map, offers, selectedOffer]);
+  }, [city, map, offers, selectedOffer]);
 
   return (
     <div

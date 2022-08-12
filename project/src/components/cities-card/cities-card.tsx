@@ -18,7 +18,7 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
 
   const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
 
-  const onClickLink = () => window.scrollTo({
+  const onClickLinkHandle = () => window.scrollTo({
     top: 0
   });
 
@@ -26,7 +26,7 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
     <article className="cities__card place-card" onMouseEnter = {cardActiveHandle}>
       {isPremium ? <PremiumFlag /> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${id}`} onClick = {onClickLink} >
+        <Link to={`/offer/${id}`} onClick = {onClickLinkHandle} >
           <img className="place-card__image" src = {previewImage} width="260" height="200" alt="Place" />
         </Link>
       </div>
@@ -50,7 +50,7 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`} onClick = {onClickLink}>{title}</Link>
+          <Link to={`/offer/${id}`} onClick = {onClickLinkHandle}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>
