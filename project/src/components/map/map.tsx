@@ -4,11 +4,11 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import {useAppSelector} from '../../hooks';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
-import {Offer} from '../../types/offer';
+// import {Offer} from '../../types/offer';
 
 
 type MapProps = {
-  selectedOffer: Offer | undefined;
+  // selectedOffer: Offer | undefined;
   containerHeigth: number;
 };
 
@@ -24,10 +24,12 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({selectedOffer, containerHeigth}:MapProps):JSX.Element{
+function Map({containerHeigth}:MapProps):JSX.Element{
   const mapRef = useRef(null);
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => (state.offers));
+  const selectedOffer = useAppSelector((state) => (state.selectedOffer));
+
   const map = useMap(mapRef, city);
   useEffect(() => {
     if (map) {
@@ -38,7 +40,7 @@ function Map({selectedOffer, containerHeigth}:MapProps):JSX.Element{
         });
 
         marker
-          .setIcon( selectedOffer !== undefined && offer.id === selectedOffer.id
+          .setIcon(selectedOffer !== undefined && offer.id === selectedOffer.id
             ? currentCustomIcon
             : defaultCustomIcon
           )

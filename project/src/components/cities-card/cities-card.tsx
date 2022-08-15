@@ -2,31 +2,34 @@ import PremiumFlag from '../premium-flag/premium-flag';
 import {Offer} from '../../types/offer';
 import {Link} from 'react-router-dom';
 import {RATING_ADAPTER} from '../../const';
-import {useState} from 'react';
-
+import {useAppDispatch} from '../../hooks';
+import {changeSelectedOffer, setFavoriteOffer} from '../../store/action';
 type CitiesCardProps = {
   offer: Offer;
-  onCardHover: (idCard: number) => void;
 };
 
 
-function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
+function CitiesCard({offer}:CitiesCardProps):JSX.Element{
   const {previewImage, isPremium, price, rating, title, type, id, isFavorite} = offer;
 
-  const [cardState] = useState(id);
-  const cardActiveHandle = () => (onCardHover(cardState));
+  const dispatch = useAppDispatch();
 
-  const [isFavoriteState, setIsFavoriteState] = useState(isFavorite);
+  const handleCardActive = () => (dispatch(changeSelectedOffer(offer)));
 
-  const onClickLinkHandle = () => window.scrollTo({
+  const handleClickFavorite = () => {
+    const updatedIsFavorite = !isFavorite;
+    dispatch(setFavoriteOffer(updatedIsFavorite));
+  };
+
+  const handleClickLink = () => window.scrollTo({
     top: 0
   });
 
   return(
-    <article className="cities__card place-card" onMouseEnter = {cardActiveHandle}>
+    <article className="cities__card place-card" onMouseEnter = {handleCardActive}>
       {isPremium ? <PremiumFlag /> : null}
       <div className="cities__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${id}`} onClick = {onClickLinkHandle} >
+        <Link to={`/offer/${id}`} onClick = {handleClickLink} >
           <img className="place-card__image" src = {previewImage} width="260" height="200" alt="Place" />
         </Link>
       </div>
@@ -36,7 +39,7 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
             <b className="place-card__price-value">{price}</b>
             <span className="place-card__price-text">&#47;&nbsp;night</span>
           </div>
-          <button className= {`place-card__bookmark-button ${isFavoriteState && 'place-card__bookmark-button--active'} button`} type="button" onClick = {() => setIsFavoriteState(!isFavoriteState)}>
+          <button className= {`place-card__bookmark-button ${isFavorite && 'place-card__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
             <svg className="place-card__bookmark-icon" width="18" height="19">
               <use xlinkHref="#icon-bookmark"></use>
             </svg>
@@ -50,7 +53,7 @@ function CitiesCard({offer, onCardHover}:CitiesCardProps):JSX.Element{
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`} onClick = {onClickLinkHandle}>{title}</Link>
+          <Link to={`/offer/${id}`} onClick = {handleClickLink}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

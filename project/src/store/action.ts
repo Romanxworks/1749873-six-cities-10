@@ -12,3 +12,12 @@ export const changeOffers = createAction('main/changeOffers', (newOffers) => ({
   payload: newOffers,
 }));
 
+export const changeSelectedOffer = createAction('main/changeSelectedOffer', (newOffer) => ({
+  payload: newOffer,
+}));
+
+export const setFavoriteOffer = createAction('property/setFavoriteOffer', (isFavorite) => ({
+  payload: isFavorite,
+}));
+
+export const getFavoriteCount = createAction('property/getFavoriteCount');

@@ -1,6 +1,4 @@
 import Header from '../../components/header/header';
-import {Offer} from '../../types/offer';
-import {useState} from 'react';
 import CitiesCard from '../../components/cities-card/cities-card';
 import Location from '../../components/location/location';
 import Map from '../../components/map/map';
@@ -16,14 +14,6 @@ function MainPage():JSX.Element{
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => (state.offers));
   const isOffers = offers.length === 0;
-
-  const [selectedOffer, setSelectedOffer] = useState<Offer>();
-
-  const onCardHover = (cardOfferId: number) => {
-    const currentOffer = offers.find((offer) => offer.id === cardOfferId);
-
-    setSelectedOffer(currentOffer);
-  };
 
   const onClickCity = (cityName:City) => {
     dispatch(changeCity(cityName));
@@ -48,12 +38,12 @@ function MainPage():JSX.Element{
                 <b className="places__found">{offers.length} places to stay in {city.name}</b>
                 <MainSort />
                 <div className="cities__places-list places__list tabs__content">
-                  {!isOffers ? offers.map((offer) => (<CitiesCard offer = {offer} onCardHover = {onCardHover} key = {offer.id} />)) : ''}
+                  {!isOffers ? offers.map((offer) => (<CitiesCard offer = {offer} key = {offer.id} />)) : ''}
                 </div>
               </section>
               <div className="cities__right-section">
                 <section className="cities__map map">
-                  {!isOffers && <Map containerHeigth = {800} selectedOffer = {selectedOffer}/>}
+                  {!isOffers && <Map containerHeigth = {800}/>}
                 </section>
               </div>
             </div>}
