@@ -1,4 +1,6 @@
 import {createAction} from '@reduxjs/toolkit';
+import {Offer} from '../types/offer';
+import {AuthorizationStatus} from '../const';
 
 export const changeCity = createAction('main/changeCity', (cityName) => ({
   payload: cityName,
@@ -21,3 +23,9 @@ export const setFavoriteOffer = createAction('property/setFavoriteOffer', (isFav
 }));
 
 export const getFavoriteCount = createAction('property/getFavoriteCount');
+
+export const loadOffers = createAction<Offer[]>('data/loadOffers');
+
+export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
+
+export const setError = createAction<string | null>('main/setError');
