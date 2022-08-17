@@ -6,8 +6,16 @@ import ErrorPage from '../../pages/error-page/error-page';
 import {Route, BrowserRouter, Routes} from 'react-router-dom';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
-
+import {useAppSelector} from '../../hooks';
+import LoadingPage from '../../pages/loading-page/loading-page';
 function App(): JSX.Element {
+  const {authorizationStatus, isDataLoaded} = useAppSelector((state) => state);
+
+  if (authorizationStatus === AuthorizationStatus.Unknown || isDataLoaded) {
+    return (
+      <LoadingPage />
+    );
+  }
   return (
     <BrowserRouter>
       <Routes>
@@ -21,13 +29,13 @@ function App(): JSX.Element {
         />
         <Route
           path={AppRoute.Room}
-          element={<PropertyPage authorizationStatus = {AuthorizationStatus.Auth}/>}
+          element={<PropertyPage />}
         />
         <Route
           path={AppRoute.Favorites}
           element={
             <PrivateRoute
-              authorizationStatus = {AuthorizationStatus.Auth}
+              authorizationStatus = {authorizationStatus}
             >
               <FavoritesPage />
             </PrivateRoute>

@@ -1,35 +1,38 @@
 import {createReducer} from '@reduxjs/toolkit';
 import {CITY} from '../mocks/city';
 import {City} from '../types/map';
-// import {offers} from '../mocks/offers';
-import {reviews} from '../mocks/reviews';
 import {Offer} from '../types/offer';
-import {Review} from '../types/review';
+// import {Review} from '../types/review';
 import {AuthorizationStatus} from '../const';
 // import {User} from '../types/user';
-import {changeCity, getOffers, changeOffers, changeSelectedOffer, loadOffers, requireAuthorization, setError} from '../store/action';
+import {changeCity,
+  getOffers,
+  changeOffers,
+  changeSelectedOffer,
+  loadOffers,
+  requireAuthorization,
+  setError,
+  setDataLoadedStatus} from '../store/action';
 
-// const getOfferByCity = () => offers.filter((offer)=>offer.city.name === CITY[0].name );
-// const offersByCity = getOfferByCity();
 
 type InitialState = {
   city: City,
   offers:Offer[],
   selectedOffer: Offer | null,
-  reviews: Review[],
   favoriteCount: number,
   authorizationStatus: AuthorizationStatus,
-  error: string | null
+  error: string | null,
+  isDataLoaded: boolean
 };
 
 const initialState: InitialState = {
   city: CITY[0],
   offers: [],
   selectedOffer: null,
-  reviews: reviews,
   favoriteCount: 3,
   authorizationStatus: AuthorizationStatus.Unknown,
-  error: null
+  error: null,
+  isDataLoaded: false
 };
 
 const reducer = createReducer(initialState, (builder) => {
@@ -51,6 +54,9 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(requireAuthorization, (state, action) => {
       state.authorizationStatus = action.payload;
+    })
+    .addCase(setDataLoadedStatus, (state, action) => {
+      state.isDataLoaded = action.payload;
     })
     .addCase(setError, (state, action) => {
       state.error = action.payload;

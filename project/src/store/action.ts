@@ -29,3 +29,5 @@ export const loadOffers = createAction<Offer[]>('data/loadOffers');
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
 export const setError = createAction<string | null>('main/setError');
+
+export const setDataLoadedStatus = createAction<boolean>('data/setDataLoadedStatus');

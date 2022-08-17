@@ -2,19 +2,6 @@ import HeaderNavigation from '../header-navigation/header-navigation';
 import {Link, useLocation} from 'react-router-dom';
 import {AppRoute} from '../../const';
 
-
-const user = {
-  avatarUrl: 'img/1.png',
-  email: 'stocks.conner@gmail.com',
-  id: 1,
-  isPro: false,
-  name: 'Willy Stocks',
-  token: 'T2xpdmVyLmNvbm5lckBnbWFpbC5jb20=',
-  loginStatus: true,
-  favoritePoint:3
-};
-
-
 function Header ():JSX.Element{
   const location = useLocation();
   const isLoginPage = location.pathname === AppRoute.Login;
@@ -27,7 +14,7 @@ function Header ():JSX.Element{
               <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
             </Link>
           </div>
-          {!isLoginPage && <HeaderNavigation user = {user} />}
+          {!isLoginPage && <HeaderNavigation />}
         </div>
       </div>
     </header>

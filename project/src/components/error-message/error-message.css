@@ -1,9 +1,11 @@
 .error-message {
     position: fixed;
-    top: 30px;
-    right: 30px;
+    top: 135px;
+    left: 30px;
     padding: 10px;
-    background-color: #628ac2;
+    background-color: #4481c3;
     color: white;
+    font-size: 17px;
     border-radius: 5px;
+    transform: skew(345deg);
   }

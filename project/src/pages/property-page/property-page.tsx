@@ -2,25 +2,21 @@ import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {AuthorizationStatus, RATING_ADAPTER} from '../../const';
-import ReviewOffer from '../../components/review/review';
+// import ReviewOffer from '../../components/review/review';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {setFavoriteOffer} from '../../store/action';
 
 
-type PropertyPageProps = {
-  authorizationStatus: AuthorizationStatus;
-}
-
-function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
+function PropertyPage():JSX.Element {
   const params = useParams();
   const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => (state.authorizationStatus));
+  const offerById = useAppSelector((state) => (state.selectedOffer));
   const offers = useAppSelector((state) => (state.offers));
-  const allReviews = useAppSelector((state) => (state.reviews));
-  const offerById = offers.find((offer) => offer.id === Number(params.id));
+  // const offerById = offers.find((offer) => offer.id === Number(params.id));
   const restOffers = offers.filter((offer) => offer.id !== Number(params.id));
-
   const handleClickFavorite = () => {
     const updatedIsFavorite = !offerById?.isFavorite;
     dispatch(setFavoriteOffer(updatedIsFavorite));
@@ -115,9 +111,9 @@ function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{offerById?.reviews.length}</span></h2>
                 <ul className="reviews__list">
-                  {offerById?.reviews.map((review)=>(<ReviewOffer id = {review} reviews = {allReviews} key={review} />))}
+                  {/* {offerById?.reviews.map((review)=>(<ReviewOffer id = {review} reviews = {allReviews} key={review} />))} */}
                 </ul>
-                {authorizationStatus === AuthorizationStatus.Auth ? <ReviewsForm /> : null}
+                {status === AuthorizationStatus.Auth ? <ReviewsForm /> : null}
 
               </section>
             </div>

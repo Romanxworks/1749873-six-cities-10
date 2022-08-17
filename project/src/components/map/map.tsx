@@ -4,11 +4,8 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import {useAppSelector} from '../../hooks';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
-// import {Offer} from '../../types/offer';
-
 
 type MapProps = {
-  // selectedOffer: Offer | undefined;
   containerHeigth: number;
 };
 
@@ -38,13 +35,13 @@ function Map({containerHeigth}:MapProps):JSX.Element{
           lat: offer.location.latitude,
           lng: offer.location.longitude
         });
-
-        marker
-          .setIcon(selectedOffer !== undefined && offer.id === selectedOffer.id
-            ? currentCustomIcon
-            : defaultCustomIcon
-          )
-          .addTo(map);
+        if(selectedOffer){
+          marker
+            .setIcon(selectedOffer !== undefined && offer.id === selectedOffer.id
+              ? currentCustomIcon
+              : defaultCustomIcon
+            )
+            .addTo(map);}
       });
     }
   }, [city, map, offers, selectedOffer]);
