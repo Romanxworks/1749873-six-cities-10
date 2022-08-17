@@ -2,38 +2,25 @@ import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {AuthorizationStatus, RATING_ADAPTER} from '../../const';
-import {Offer} from '../../types/offer';
-import ReviewOffer from '../../components/review/review';
-import {useState, useEffect} from 'react';
+// import ReviewOffer from '../../components/review/review';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
-import {useAppSelector} from '../../hooks';
+import {useAppSelector, useAppDispatch} from '../../hooks';
+import {setFavoriteOffer} from '../../store/action';
 
 
-type PropertyPageProps = {
-  authorizationStatus: AuthorizationStatus;
-}
-
-function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
+function PropertyPage():JSX.Element {
   const params = useParams();
+  const dispatch = useAppDispatch();
+  const status = useAppSelector((state) => (state.authorizationStatus));
+  const offerById = useAppSelector((state) => (state.selectedOffer));
   const offers = useAppSelector((state) => (state.offers));
-  const reviews = useAppSelector((state) => (state.reviews));
-  const offerById = offers.find((offer) => offer.id === Number(params.id));
+  // const offerById = offers.find((offer) => offer.id === Number(params.id));
   const restOffers = offers.filter((offer) => offer.id !== Number(params.id));
-
-  const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
-  useEffect(() => {
-    setFavorite(offerById?.isFavorite);
-  }, [offerById?.isFavorite]);
-
-  const [selectedOffer, setSelectedOffer] = useState<Offer | undefined>(offerById);
-
-  const onCardHover = (cardOfferId: number) => {
-    const currentOffer = offers.find((offer) => offer.id === cardOfferId);
-
-    setSelectedOffer(currentOffer);
+  const handleClickFavorite = () => {
+    const updatedIsFavorite = !offerById?.isFavorite;
+    dispatch(setFavoriteOffer(updatedIsFavorite));
   };
-
   return(
     <div className="page">
       <Header />
@@ -42,8 +29,8 @@ function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {offerById?.images.map((image, id) => {
-                const keyValue = `o-${image}-${id}`;
+              {offerById?.images.map((image, i) => {
+                const keyValue = `o-${image}-${i}`;
                 return(
                   <div key={keyValue} className="property__image-wrapper">
                     <img className="property__image" src = {image} alt = {offerById.type}/>
@@ -60,7 +47,7 @@ function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
                 <h1 className="property__name">
                   {offerById?.title}
                 </h1>
-                <button className={`property__bookmark-button ${isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {() => setFavorite(!isFavorite)}>
+                <button className={`property__bookmark-button ${offerById?.isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
                   <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -124,22 +111,22 @@ function PropertyPage({authorizationStatus}:PropertyPageProps):JSX.Element {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{offerById?.reviews.length}</span></h2>
                 <ul className="reviews__list">
-                  {offerById?.reviews.map((review)=>(<ReviewOffer id = {review} reviews = {reviews} key={review} />))}
+                  {/* {offerById?.reviews.map((review)=>(<ReviewOffer id = {review} reviews = {allReviews} key={review} />))} */}
                 </ul>
-                {authorizationStatus === AuthorizationStatus.Auth ? <ReviewsForm /> : null}
+                {status === AuthorizationStatus.Auth ? <ReviewsForm /> : null}
 
               </section>
             </div>
           </div>
           <section className="property__map map">
-            { offerById && <Map selectedOffer = {selectedOffer} containerHeigth = {600}/>}
+            { offerById && <Map containerHeigth = {600}/>}
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {restOffers.map((offer) => (<CitiesCard offer = {offer} onCardHover = {onCardHover} key = {offer.id} />))}
+              {restOffers.map((offer) => (<CitiesCard offer = {offer} key = {offer.id} />))}
             </div>
           </section>
         </div>

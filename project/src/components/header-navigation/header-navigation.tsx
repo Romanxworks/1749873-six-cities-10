@@ -1,22 +1,20 @@
 import UserInfo from '../user-info/user-info';
-import {User} from '../../types/user';
 import {Link} from 'react-router-dom';
+import {useAppSelector} from '../../hooks';
 
-type HeaderNavigationProps = {
-    user:User;
-}
 
-function HeaderNavigation ({user}:HeaderNavigationProps):JSX.Element{
+function HeaderNavigation ():JSX.Element{
+  const isLogin = useAppSelector((state) => state.authorizationStatus) === 'AUTH';
   return (
     <nav className="header__nav">
       <ul className="header__nav-list">
 
-        {user.loginStatus && <UserInfo user = {user}/>}
+        {isLogin && <UserInfo />}
 
         <li className="header__nav-item">
           <Link className="header__nav-link" to="/login">
-            {!user.loginStatus && <div className="header__avatar-wrapper user__avatar-wrapper"></div>}
-            <span className="header__signout">{user.loginStatus ? 'Sign out' : 'Sign in'}</span>
+            {!isLogin && <div className="header__avatar-wrapper user__avatar-wrapper"></div>}
+            <span className="header__signout">{isLogin ? 'Sign out' : 'Sign in'}</span>
           </Link>
         </li>
       </ul>

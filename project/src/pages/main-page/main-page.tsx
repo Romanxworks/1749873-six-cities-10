@@ -1,12 +1,10 @@
 import Header from '../../components/header/header';
-import {Offer} from '../../types/offer';
-import {useState} from 'react';
 import CitiesCard from '../../components/cities-card/cities-card';
 import Location from '../../components/location/location';
 import Map from '../../components/map/map';
 import {City} from '../../types/map';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeCity, getOffers} from '../../store/action';
+import {changeCity} from '../../store/action';
 import MainEmpty from '../../components/main-empty/main-empty';
 import MainSort from '../../components/main-sort/main-sort';
 
@@ -15,19 +13,11 @@ function MainPage():JSX.Element{
   const dispatch = useAppDispatch();
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => (state.offers));
-  const isOffers = offers.length === 0;
-
-  const [selectedOffer, setSelectedOffer] = useState<Offer>();
-
-  const onCardHover = (cardOfferId: number) => {
-    const currentOffer = offers.find((offer) => offer.id === cardOfferId);
-
-    setSelectedOffer(currentOffer);
-  };
+  const offersByCity = offers.filter((offer) => offer.city.name === city.name);
+  const isOffers = offersByCity.length === 0;
 
   const onClickCity = (cityName:City) => {
     dispatch(changeCity(cityName));
-    dispatch(getOffers(cityName));
   };
 
   return (
@@ -45,15 +35,15 @@ function MainPage():JSX.Element{
             <div className="cities__places-container container">
               <section className="cities__places places">
                 <h2 className="visually-hidden">Places</h2>
-                <b className="places__found">{offers.length} places to stay in {city.name}</b>
+                <b className="places__found">{offersByCity.length} places to stay in {city.name}</b>
                 <MainSort />
                 <div className="cities__places-list places__list tabs__content">
-                  {!isOffers ? offers.map((offer) => (<CitiesCard offer = {offer} onCardHover = {onCardHover} key = {offer.id} />)) : ''}
+                  {!isOffers ? offersByCity.map((offer) => (<CitiesCard offer = {offer} key = {offer.id} />)) : ''}
                 </div>
               </section>
               <div className="cities__right-section">
                 <section className="cities__map map">
-                  {!isOffers && <Map containerHeigth = {800} selectedOffer = {selectedOffer}/>}
+                  {!isOffers && <Map containerHeigth = {800}/>}
                 </section>
               </div>
             </div>}
