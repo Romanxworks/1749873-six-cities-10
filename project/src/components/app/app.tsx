@@ -8,6 +8,7 @@ import {AppRoute, AuthorizationStatus} from '../../const';
 import PrivateRoute from '../private-route/private-route';
 import {useAppSelector} from '../../hooks';
 import LoadingPage from '../../pages/loading-page/loading-page';
+
 function App(): JSX.Element {
   const {authorizationStatus, isDataLoaded} = useAppSelector((state) => state);
 
@@ -20,12 +21,12 @@ function App(): JSX.Element {
     <BrowserRouter>
       <Routes>
         <Route
-          path={AppRoute.Main}
-          element={<MainPage />}
-        />
-        <Route
           path={AppRoute.Login}
           element={<LoginPage />}
+        />
+        <Route
+          path={AppRoute.Main}
+          element={<MainPage />}
         />
         <Route
           path={AppRoute.Room}

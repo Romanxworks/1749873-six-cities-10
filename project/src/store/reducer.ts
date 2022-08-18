@@ -18,6 +18,7 @@ import {changeCity,
 type InitialState = {
   city: City,
   offers:Offer[],
+  offersByCity:Offer[],
   selectedOffer: Offer | null,
   favoriteCount: number,
   authorizationStatus: AuthorizationStatus,
@@ -28,6 +29,7 @@ type InitialState = {
 const initialState: InitialState = {
   city: CITY[0],
   offers: [],
+  offersByCity: [],
   selectedOffer: null,
   favoriteCount: 3,
   authorizationStatus: AuthorizationStatus.Unknown,
@@ -41,7 +43,7 @@ const reducer = createReducer(initialState, (builder) => {
       state.city = action.payload;
     })
     .addCase(getOffers, (state, action) => {
-      state.offers = state.offers.filter((offer)=>offer.city.name === action.payload.name);
+      state.offersByCity = state.offers.filter((offer)=>offer.city.name === action.payload.name);
     })
     .addCase(changeOffers, (state, action) => {
       state.offers = action.payload;
