@@ -4,7 +4,7 @@ import Location from '../../components/location/location';
 import Map from '../../components/map/map';
 import {City} from '../../types/map';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeCity} from '../../store/action';
+import {changeCity, getOffers} from '../../store/action';
 import MainEmpty from '../../components/main-empty/main-empty';
 import MainSort from '../../components/main-sort/main-sort';
 
@@ -18,6 +18,7 @@ function MainPage():JSX.Element{
 
   const onClickCity = (cityName:City) => {
     dispatch(changeCity(cityName));
+    dispatch(getOffers(cityName));
   };
 
   return (
