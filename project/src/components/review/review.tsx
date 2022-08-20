@@ -2,33 +2,31 @@ import {Review} from '../../types/review';
 import {RATING_ADAPTER} from '../../const';
 
 type ReviewOfferProps = {
-    id: number,
-    reviews:Review[]
+    review:Review
 }
 
-function ReviewOffer ({id, reviews}:ReviewOfferProps):JSX.Element{
-  const review = reviews.find((reviewById) => reviewById.id === id);
+function ReviewOffer ({review}:ReviewOfferProps):JSX.Element{
   return(
     <li className="reviews__item">
       <div className="reviews__user user">
         <div className="reviews__avatar-wrapper user__avatar-wrapper">
-          <img className="reviews__avatar user__avatar" src = {review?.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
+          <img className="reviews__avatar user__avatar" src = {review.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
         </div>
         <span className="reviews__user-name">
-          {review?.user.name}
+          {review.user.name}
         </span>
       </div>
       <div className="reviews__info">
         <div className="reviews__rating rating">
           <div className="reviews__stars rating__stars">
-            <span style={{width: `${review ? review.rating / RATING_ADAPTER : null}%`}}></span>
+            <span style={{width: `${review.rating / RATING_ADAPTER}%`}}></span>
             <span className="visually-hidden">Rating</span>
           </div>
         </div>
         <p className="reviews__text">
-          {review?.comment}
+          {review.comment}
         </p>
-        <time className="reviews__time" dateTime="2019-04-24">{review?.date}</time>
+        <time className="reviews__time" dateTime="2019-04-24">{review.date}</time>
       </div>
     </li>
   );

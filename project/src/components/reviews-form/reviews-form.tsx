@@ -11,6 +11,7 @@ function ReviewsForm():JSX.Element{
 
   const commentChangeHandle = ({target}: ChangeEvent<HTMLTextAreaElement>) => {
     setComment(target.value);
+
   };
 
   return (
@@ -57,7 +58,7 @@ function ReviewsForm():JSX.Element{
         <p className="reviews__help">
                       To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit" disabled>Submit</button>
+        <button className="reviews__submit form__submit button" type="submit">Submit</button>
       </div>
     </form>
   );

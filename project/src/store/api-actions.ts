@@ -2,11 +2,21 @@ import {AxiosInstance} from 'axios';
 import {createAsyncThunk} from '@reduxjs/toolkit';
 import {AppDispatch, State} from '../types/state.js';
 import {Offer} from '../types/offer.js';
-import {loadOffers, requireAuthorization, setError, setDataLoadedStatus, redirectToRoute} from './action';
+import {
+  loadOffers,
+  requireAuthorization,
+  setError,
+  setDataLoadedStatus,
+  redirectToRoute,
+  loadOffer,
+  loadOffersNearby,
+  loadReveiws
+} from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute, TIMEOUT_SHOW_ERROR} from '../const';
 import {User, AuthData} from '../types/user.js';
 import {store} from './';
+import {Review} from '../types/review.js';
 
 export const clearErrorAction = createAsyncThunk(
   'main/clearError',
@@ -29,6 +39,56 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
     dispatch(setDataLoadedStatus(true));
     dispatch(loadOffers(data));
     dispatch(setDataLoadedStatus(false));
+  },
+);
+
+export const fetchOfferAction = createAsyncThunk<void, string | undefined,{
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchOffer',
+  async (id, {dispatch, extra: api}) => {
+    try {
+      const {data} = await api.get<Offer>(`${APIRoute.Offers}/${id}`);
+      dispatch(setDataLoadedStatus(true));
+      dispatch(loadOffer(data));
+      dispatch(setDataLoadedStatus(false));
+    } catch {
+      dispatch(redirectToRoute(AppRoute.Error));
+    }
+  },
+);
+
+export const fetchOffersNearbyAction = createAsyncThunk<void, string | undefined,{
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchOffersNearby',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Offer[]>(`${APIRoute.Offers}/${id}/nearby`);
+    dispatch(setDataLoadedStatus(true));
+    dispatch(loadOffersNearby(data));
+    dispatch(setDataLoadedStatus(false));
+
+
+  },
+);
+
+export const fetchReviewsAction = createAsyncThunk<void, string | undefined,{
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchReviews',
+  async (id, {dispatch, extra: api}) => {
+    const {data} = await api.get<Review[]>(`${APIRoute.Comments}/${id}`);
+    dispatch(setDataLoadedStatus(true));
+    dispatch(loadReveiws(data));
+    dispatch(setDataLoadedStatus(false));
+
+
   },
 );
 

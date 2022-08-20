@@ -21,9 +21,11 @@ function CitiesCard({offer}:CitiesCardProps):JSX.Element{
     dispatch(setFavoriteOffer(updatedIsFavorite));
   };
 
-  const handleClickLink = () => window.scrollTo({
-    top: 0
-  });
+  const handleClickLink = () => {
+    window.scrollTo({
+      top: 0
+    });
+  };
 
   return(
     <article className="cities__card place-card" onMouseEnter = {handleCardActive}>

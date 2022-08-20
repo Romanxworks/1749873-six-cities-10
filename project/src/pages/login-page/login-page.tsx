@@ -1,20 +1,24 @@
 import {Link} from 'react-router-dom';
 import {useRef, FormEvent, SyntheticEvent} from 'react';
 import Header from '../../components/header/header';
-import {useAppDispatch} from '../../hooks';
-import {AppRoute} from '../../const';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {AppRoute, AuthorizationStatus} from '../../const';
 import {loginAction} from '../../store/api-actions';
 import {AuthData} from '../../types/auth-data';
 import {getRandomInteger} from '../../utils';
-import {changeCity} from '../../store/action';
+import {changeCity, redirectToRoute, getOffersByCity} from '../../store/action';
 import {CITY} from '../../mocks/city';
 
 function LoginPage(): JSX.Element {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-
+  const authStatus = useAppSelector((state) => (state.authorizationStatus));
   const randomCityName = CITY[getRandomInteger(0,(CITY.length - 1))];
   const dispatch = useAppDispatch();
+
+  if(authStatus === AuthorizationStatus.Auth){
+    dispatch(redirectToRoute(AppRoute.Main));
+  }
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
@@ -34,6 +38,7 @@ function LoginPage(): JSX.Element {
   const handleCityClick = (evt:SyntheticEvent<HTMLElement>) => {
     const getRandomCity = CITY.find((city) => city.name === evt.currentTarget.innerText);
     dispatch(changeCity(getRandomCity));
+    dispatch(getOffersByCity(getRandomCity));
   };
 
   return (
