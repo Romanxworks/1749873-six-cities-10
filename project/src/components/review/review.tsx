@@ -1,36 +1,49 @@
-import {Review} from '../../types/review';
+import {sortByDate, getReviewDate} from '../../utils';
 import {RATING_ADAPTER} from '../../const';
+import {useAppSelector, useAppDispatch} from '../../hooks';
+import {useEffect} from 'react';
+import {fetchReviewsAction} from '../../store/api-actions';
 
 type ReviewOfferProps = {
-    id: number,
-    reviews:Review[]
+    id: string
 }
 
-function ReviewOffer ({id, reviews}:ReviewOfferProps):JSX.Element{
-  const review = reviews.find((reviewById) => reviewById.id === id);
+function ReviewOffer ({id}:ReviewOfferProps):JSX.Element{
+  const dispatch = useAppDispatch();
+
+  useEffect(()=>{
+    dispatch(fetchReviewsAction(id));
+  },[id, dispatch]);
+
+  const reviews = useAppSelector((state) => (state.reviews));
+  const sortReviews = reviews.slice().sort(sortByDate).slice(0, 10);
+
   return(
-    <li className="reviews__item">
-      <div className="reviews__user user">
-        <div className="reviews__avatar-wrapper user__avatar-wrapper">
-          <img className="reviews__avatar user__avatar" src = {review?.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
-        </div>
-        <span className="reviews__user-name">
-          {review?.user.name}
-        </span>
-      </div>
-      <div className="reviews__info">
-        <div className="reviews__rating rating">
-          <div className="reviews__stars rating__stars">
-            <span style={{width: `${review ? review.rating / RATING_ADAPTER : null}%`}}></span>
-            <span className="visually-hidden">Rating</span>
+    <ul className="reviews__list">
+      {sortReviews.map((review) => (
+        <li className="reviews__item" key={review.id}>
+          <div className="reviews__user user">
+            <div className="reviews__avatar-wrapper user__avatar-wrapper">
+              <img className="reviews__avatar user__avatar" src = {review.user.avatarUrl} width="54" height="54" alt="Reviews avatar"/>
+            </div>
+            <span className="reviews__user-name">
+              {review.user.name}
+            </span>
           </div>
-        </div>
-        <p className="reviews__text">
-          {review?.comment}
-        </p>
-        <time className="reviews__time" dateTime="2019-04-24">{review?.date}</time>
-      </div>
-    </li>
+          <div className="reviews__info">
+            <div className="reviews__rating rating">
+              <div className="reviews__stars rating__stars">
+                <span style={{width: `${review.rating / RATING_ADAPTER}%`}}></span>
+                <span className="visually-hidden">Rating</span>
+              </div>
+            </div>
+            <p className="reviews__text">
+              {review.comment}
+            </p>
+            <time className="reviews__time" dateTime="2019-04-24">{getReviewDate(review.date)}</time>
+          </div>
+        </li>))}
+    </ul>
   );
 }
 

@@ -3,6 +3,7 @@ export enum AppRoute {
     Favorites = '/favorites',
     Room = '/offer/:id',
     Main = '/',
+    Error = '/*'
   }
 
 export enum AuthorizationStatus {
@@ -13,8 +14,8 @@ export enum AuthorizationStatus {
 
 export enum APIRoute {
     Offers = '/hotels',
-    Offer = '/hotels/{hotelId}',
     Favorite = '/favorite',
+    Comments = '/comments',
     Login = '/login',
     Logout = '/logout',
   }

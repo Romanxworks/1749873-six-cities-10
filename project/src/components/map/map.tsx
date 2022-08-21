@@ -7,6 +7,7 @@ import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
 
 type MapProps = {
   containerHeigth: number;
+  isMain: boolean;
 };
 
 const defaultCustomIcon = new Icon({
@@ -21,30 +22,49 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({containerHeigth}:MapProps):JSX.Element{
+function Map({containerHeigth, isMain}:MapProps):JSX.Element{
   const mapRef = useRef(null);
   const city = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => (state.offers));
+  const offersByCity = useAppSelector((state) => (state.offersByCity));
+  const offersNearby = useAppSelector((state) => (state.offersNearby));
+  const offerById = useAppSelector((state) => (state.offer));
   const selectedOffer = useAppSelector((state) => (state.selectedOffer));
+  const offers = offersByCity;
 
   const map = useMap(mapRef, city);
+
   useEffect(() => {
     if (map) {
-      offers.forEach((offer) => {
-        const marker = new Marker({
-          lat: offer.location.latitude,
-          lng: offer.location.longitude
-        });
-        if(selectedOffer){
-          marker
-            .setIcon(selectedOffer !== undefined && offer.id === selectedOffer.id
-              ? currentCustomIcon
-              : defaultCustomIcon
-            )
-            .addTo(map);}
-      });
+      if(isMain){
+        map?.panTo({lat:city.location.latitude, lng:city.location.longitude});
+        offers.forEach((offer) => {
+          const marker = new Marker({
+            lat: offer.location.latitude,
+            lng: offer.location.longitude
+          });
+          if(selectedOffer){
+            marker
+              .setIcon(selectedOffer !== undefined && offer.id === selectedOffer.id
+                ? currentCustomIcon
+                : defaultCustomIcon
+              )
+              .addTo(map);}
+        });}else{
+        if(offerById){
+          map.panTo({lat:offerById.location.latitude, lng:offerById.location.longitude});
+          const allOffersNearby = [...offersNearby,offerById];
+          allOffersNearby.forEach((offer) => {
+            const marker = new Marker({
+              lat: offer.location.latitude,
+              lng: offer.location.longitude
+            });
+            marker
+              .setIcon(offer.id === offerById.id ? currentCustomIcon : defaultCustomIcon)
+              .addTo(map);
+          });
+        }}
     }
-  }, [city, map, offers, selectedOffer]);
+  }, [map, offers, selectedOffer, city, isMain, offerById, offersNearby]);
 
   return (
     <div

@@ -1,30 +1,24 @@
-import {Link, useNavigate} from 'react-router-dom';
-import {useRef, FormEvent, SyntheticEvent, useEffect} from 'react';
+import {Link} from 'react-router-dom';
+import {useRef, FormEvent, SyntheticEvent} from 'react';
 import Header from '../../components/header/header';
-import {useAppSelector, useAppDispatch} from '../../hooks';
-import {AuthorizationStatus, AppRoute} from '../../const';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {AppRoute, AuthorizationStatus} from '../../const';
 import {loginAction} from '../../store/api-actions';
-import {AuthData} from '../../types/auth-data';
+import {AuthData} from '../../types/user';
 import {getRandomInteger} from '../../utils';
-import {changeCity} from '../../store/action';
+import {changeCity, redirectToRoute, getOffersByCity} from '../../store/action';
 import {CITY} from '../../mocks/city';
 
 function LoginPage(): JSX.Element {
-  const authSatatus = useAppSelector((state) => state.authorizationStatus);
-
-  const navigate = useNavigate();
-
-  useEffect(() => {
-    if(authSatatus === AuthorizationStatus.Auth){
-      navigate(AppRoute.Main);
-    }
-  },[authSatatus, navigate]);
-
-
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const randomCityName = CITY[getRandomInteger(0,CITY.length)];
+  const authStatus = useAppSelector((state) => (state.authorizationStatus));
+  const randomCityName = CITY[getRandomInteger(0,(CITY.length - 1))];
   const dispatch = useAppDispatch();
+
+  if(authStatus === AuthorizationStatus.Auth){
+    dispatch(redirectToRoute(AppRoute.Main));
+  }
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
@@ -44,6 +38,7 @@ function LoginPage(): JSX.Element {
   const handleCityClick = (evt:SyntheticEvent<HTMLElement>) => {
     const getRandomCity = CITY.find((city) => city.name === evt.currentTarget.innerText);
     dispatch(changeCity(getRandomCity));
+    dispatch(getOffersByCity(getRandomCity));
   };
 
   return (
@@ -79,7 +74,7 @@ function LoginPage(): JSX.Element {
           </section>
           <section className="locations locations--login locations--current">
             <div className="locations__item">
-              <Link className="locations__item-link" to="/" onClick={handleCityClick}>
+              <Link className="locations__item-link" to={AppRoute.Main} onClick={handleCityClick}>
                 <span>{randomCityName.name}</span>
               </Link>
             </div>

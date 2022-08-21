@@ -1,22 +1,30 @@
 import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
+import {useEffect} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {AuthorizationStatus, RATING_ADAPTER} from '../../const';
-// import ReviewOffer from '../../components/review/review';
+import ReviewOffer from '../../components/review/review';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {setFavoriteOffer} from '../../store/action';
-
+import {fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction} from '../../store/api-actions';
 
 function PropertyPage():JSX.Element {
   const params = useParams();
+  const id = String(params.id);
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => (state.authorizationStatus));
-  const offerById = useAppSelector((state) => (state.selectedOffer));
-  const offers = useAppSelector((state) => (state.offers));
-  // const offerById = offers.find((offer) => offer.id === Number(params.id));
-  const restOffers = offers.filter((offer) => offer.id !== Number(params.id));
+
+  useEffect(()=>{
+    dispatch(fetchOfferAction(id));
+    dispatch(fetchOffersNearbyAction(id));
+    dispatch(fetchReviewsAction(id));
+  },[id, dispatch]);
+
+  const offerById = useAppSelector((state) => (state.offer));
+  const restOffers = useAppSelector((state) => (state.offersNearby));
+  const reviews = useAppSelector((state) => (state.reviews));
   const handleClickFavorite = () => {
     const updatedIsFavorite = !offerById?.isFavorite;
     dispatch(setFavoriteOffer(updatedIsFavorite));
@@ -29,11 +37,11 @@ function PropertyPage():JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {offerById?.images.map((image, i) => {
+              {offerById?.images.slice(0,6).map((image, i) => {
                 const keyValue = `o-${image}-${i}`;
                 return(
                   <div key={keyValue} className="property__image-wrapper">
-                    <img className="property__image" src = {image} alt = {offerById.type}/>
+                    <img className="property__image" src = {image} alt = {offerById?.type}/>
                   </div>
                 );
               })}
@@ -79,12 +87,12 @@ function PropertyPage():JSX.Element {
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
                 <ul className="property__inside-list">
-                  {offerById?.features.map((feature) => {
-                    const keyValue = `o-${feature}`;
+                  {offerById?.goods.map((good) => {
+                    const keyValue = `o-${good}`;
                     return(
 
                       <li key={keyValue} className="property__inside-item">
-                        {feature}
+                        {good}
                       </li>
                     );
                   })}
@@ -109,17 +117,17 @@ function PropertyPage():JSX.Element {
                 </div>
               </div>
               <section className="property__reviews reviews">
-                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{offerById?.reviews.length}</span></h2>
-                <ul className="reviews__list">
-                  {/* {offerById?.reviews.map((review)=>(<ReviewOffer id = {review} reviews = {allReviews} key={review} />))} */}
-                </ul>
-                {status === AuthorizationStatus.Auth ? <ReviewsForm /> : null}
+                <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
+
+                <ReviewOffer id = {id}/>
+
+                {status === AuthorizationStatus.Auth ? <ReviewsForm id = {id} /> : null}
 
               </section>
             </div>
           </div>
           <section className="property__map map">
-            { offerById && <Map containerHeigth = {600}/>}
+            { offerById && <Map containerHeigth = {600} isMain ={false} />}
           </section>
         </section>
         <div className="container">

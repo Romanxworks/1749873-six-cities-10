@@ -8,7 +8,7 @@ export type Offer = {
     type: string;
     bedrooms: number;
     maxAdults: number;
-    features: string[];
+    goods: string[];
     host: User;
     rating: number;
     isFavorite: boolean;

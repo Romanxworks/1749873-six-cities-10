@@ -1,6 +1,6 @@
 import {useState, SyntheticEvent} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {changeOffers, getOffers} from '../../store/action';
+import {changeOffers, getOffersByCity} from '../../store/action';
 import {sortByPriceToLow, sortByPriceToHigh, sortByRating} from '../../utils';
 
 function MainSort ():JSX.Element{
@@ -9,12 +9,13 @@ function MainSort ():JSX.Element{
   const [sortName, setSortName] = useState('Popular');
 
   const city = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => (state.offers));
+  const offers = useAppSelector((state) => (state.offersByCity));
+  const sortOffers = offers.slice();
 
   const getSotrName = ({currentTarget}:SyntheticEvent<HTMLElement>) => {
     setSortName(currentTarget.innerHTML);
     setSortState(!sortState);
-    const sortOffers = offers.slice();
+
     switch (currentTarget.dataset.sort) {
       case 'PriceLow':
         sortOffers.sort(sortByPriceToLow);
@@ -29,7 +30,7 @@ function MainSort ():JSX.Element{
         dispatch(changeOffers(sortOffers));
         break;
       case 'Popular':
-        dispatch(getOffers(city));
+        dispatch(getOffersByCity(city));
         break;
     }
   };
