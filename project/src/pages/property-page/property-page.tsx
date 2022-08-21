@@ -12,14 +12,15 @@ import {fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction} from '../
 
 function PropertyPage():JSX.Element {
   const params = useParams();
-
+  const id = String(params.id);
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => (state.authorizationStatus));
+
   useEffect(()=>{
-    dispatch(fetchOfferAction(params.id));
-    dispatch(fetchOffersNearbyAction(params.id));
-    dispatch(fetchReviewsAction(params.id));
-  },[params.id, dispatch]);
+    dispatch(fetchOfferAction(id));
+    dispatch(fetchOffersNearbyAction(id));
+    dispatch(fetchReviewsAction(id));
+  },[id, dispatch]);
 
   const offerById = useAppSelector((state) => (state.offer));
   const restOffers = useAppSelector((state) => (state.offersNearby));
@@ -117,10 +118,10 @@ function PropertyPage():JSX.Element {
               </div>
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
-                <ul className="reviews__list">
-                  {reviews.map((review)=>(<ReviewOffer review = {review} key={review.id} />))}
-                </ul>
-                {status === AuthorizationStatus.Auth ? <ReviewsForm /> : null}
+
+                <ReviewOffer id = {id}/>
+
+                {status === AuthorizationStatus.Auth ? <ReviewsForm id = {id} /> : null}
 
               </section>
             </div>

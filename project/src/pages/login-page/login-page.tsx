@@ -4,7 +4,7 @@ import Header from '../../components/header/header';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {AppRoute, AuthorizationStatus} from '../../const';
 import {loginAction} from '../../store/api-actions';
-import {AuthData} from '../../types/auth-data';
+import {AuthData} from '../../types/user';
 import {getRandomInteger} from '../../utils';
 import {changeCity, redirectToRoute, getOffersByCity} from '../../store/action';
 import {CITY} from '../../mocks/city';

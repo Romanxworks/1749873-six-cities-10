@@ -1,6 +1,7 @@
 import {createAction} from '@reduxjs/toolkit';
 import {Offer} from '../types/offer';
 import {Review} from '../types/review';
+// import {CommentData} from '../types/user';
 import {AuthorizationStatus, AppRoute} from '../const';
 
 export const changeCity = createAction('main/changeCity', (cityName) => ({
@@ -32,6 +33,8 @@ export const loadOffer = createAction<Offer>('data/loadOffer');
 export const loadOffersNearby = createAction<Offer[]>('data/loadOffersNearby');
 
 export const loadReveiws = createAction<Review[]>('data/loadReveiws');
+
+// export const addReveiw = createAction<CommentData>('data/addReveiw');
 
 export const setIdOffer = createAction<number>('property/setIdOffer');
 
