@@ -1,21 +1,27 @@
 import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
-import {AuthorizationStatus, RATING_ADAPTER} from '../../const';
+import {AuthorizationStatus, RATING_ADAPTER, AppRoute, MAX_IMAGES_COUNT} from '../../const';
 import ReviewOffer from '../../components/review/review';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {setFavoriteOffer} from '../../store/action';
-import {fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction} from '../../store/api-actions';
+import {redirectToRoute} from '../../store/action';
+import {
+  fetchOfferAction,
+  fetchOffersNearbyAction,
+  fetchReviewsAction,
+  fetchFavoriteAction,
+  fetchSetFavoriteAction
+} from '../../store/api-actions';
 
 function PropertyPage():JSX.Element {
   const params = useParams();
   const id = String(params.id);
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => (state.authorizationStatus));
-
+  const isLogin = status === AuthorizationStatus.Auth;
   useEffect(()=>{
     dispatch(fetchOfferAction(id));
     dispatch(fetchOffersNearbyAction(id));
@@ -23,11 +29,21 @@ function PropertyPage():JSX.Element {
   },[id, dispatch]);
 
   const offerById = useAppSelector((state) => (state.offer));
+  const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
   const restOffers = useAppSelector((state) => (state.offersNearby));
   const reviews = useAppSelector((state) => (state.reviews));
+
   const handleClickFavorite = () => {
-    const updatedIsFavorite = !offerById?.isFavorite;
-    dispatch(setFavoriteOffer(updatedIsFavorite));
+    if(isLogin){
+      const updatedIsFavorite = !isFavorite;
+      setFavorite(updatedIsFavorite);
+      const favoriteStatus = Number(updatedIsFavorite);
+      dispatch(fetchSetFavoriteAction({id,status:favoriteStatus}));
+      dispatch(fetchFavoriteAction());
+    }else{
+      dispatch(redirectToRoute(AppRoute.Login));
+    }
+
   };
   return(
     <div className="page">
@@ -37,7 +53,7 @@ function PropertyPage():JSX.Element {
         <section className="property">
           <div className="property__gallery-container container">
             <div className="property__gallery">
-              {offerById?.images.slice(0,6).map((image, i) => {
+              {offerById?.images.slice(0,MAX_IMAGES_COUNT).map((image, i) => {
                 const keyValue = `o-${image}-${i}`;
                 return(
                   <div key={keyValue} className="property__image-wrapper">
@@ -55,7 +71,7 @@ function PropertyPage():JSX.Element {
                 <h1 className="property__name">
                   {offerById?.title}
                 </h1>
-                <button className={`property__bookmark-button ${offerById?.isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
+                <button className={`property__bookmark-button ${isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
                   <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>

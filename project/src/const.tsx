@@ -20,6 +20,10 @@ export enum APIRoute {
     Logout = '/logout',
   }
 
+export const MAX_IMAGES_COUNT = 6;
+
+export const MAX_REVIEWS_COUNT = 10;
+
 export const TIMEOUT_SHOW_ERROR = 2000;
 
 export const RATING_ADAPTER = 0.05;

@@ -4,7 +4,6 @@ import {City} from '../types/map';
 import {Offer} from '../types/offer';
 import {Review} from '../types/review';
 import {AuthorizationStatus} from '../const';
-// import {User} from '../types/user';
 import {changeCity,
   getOffersByCity,
   changeOffers,
@@ -16,18 +15,22 @@ import {changeCity,
   setError,
   setDataLoadedStatus,
   setIdOffer,
-  loadOffersNearby
+  loadOffersNearby,
+  loadFavorites,
+  setUserEmail
 } from '../store/action';
 
 
 type InitialState = {
   city: City,
-  offers:Offer[],
-  offersNearby:Offer[],
+  offers: Offer[],
+  email: string,
+  offersNearby: Offer[],
   id: number,
-  offersByCity:Offer[],
-  offer:Offer | null,
+  offersByCity: Offer[],
+  offer: Offer | null,
   reviews: Review[],
+  favorites: Offer[],
   selectedOffer: Offer | null,
   favoriteCount: number,
   authorizationStatus: AuthorizationStatus,
@@ -42,9 +45,11 @@ const initialState: InitialState = {
   offersByCity: [],
   selectedOffer: null,
   offer: null,
+  email: '',
   reviews: [],
+  favorites: [],
   id: 0,
-  favoriteCount: 3,
+  favoriteCount: 0,
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
   isDataLoaded: false
@@ -67,12 +72,19 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(setIdOffer, (state, action) => {
       state.id = action.payload;
     })
+    .addCase(setUserEmail, (state, action) => {
+      state.email = action.payload;
+    })
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
       state.offersByCity = state.offers.filter((offer)=>offer.city.name === CITY[0].name);
     })
     .addCase(loadOffer, (state, action) => {
       state.offer = action.payload;
+    })
+    .addCase(loadFavorites, (state, action) => {
+      state.favorites = action.payload;
+      state.favoriteCount = action.payload.length;
     })
     .addCase(loadOffersNearby, (state, action) => {
       state.offersNearby = action.payload;

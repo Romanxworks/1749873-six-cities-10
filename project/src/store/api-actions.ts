@@ -10,13 +10,20 @@ import {
   redirectToRoute,
   loadOffer,
   loadOffersNearby,
-  loadReveiws
+  loadReveiws,
+  loadFavorites,
+  setUserEmail
 } from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute, TIMEOUT_SHOW_ERROR} from '../const';
 import {User, AuthData, CommentData} from '../types/user.js';
 import {store} from './';
 import {Review} from '../types/review.js';
+
+type FavoriteData = {
+  id: string,
+  status: number
+}
 
 export const clearErrorAction = createAsyncThunk(
   'main/clearError',
@@ -40,6 +47,31 @@ export const fetchOffersAction = createAsyncThunk<void, undefined, {
     dispatch(loadOffers(data));
     dispatch(setDataLoadedStatus(false));
   },
+);
+
+export const fetchFavoriteAction = createAsyncThunk<void, undefined, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchFavorite',
+  async (_arg, {dispatch, extra: api}) => {
+    const {data} = await api.get<Offer[]>(APIRoute.Favorite);
+    dispatch(setDataLoadedStatus(true));
+    dispatch(loadFavorites(data));
+    dispatch(setDataLoadedStatus(false));
+  }
+);
+
+export const fetchSetFavoriteAction = createAsyncThunk<void, FavoriteData, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchSetFavorite',
+  async ({id, status}, {extra: api}) => {
+    await api.post<Offer>(`${APIRoute.Favorite}/${id}/${status}`);
+  }
 );
 
 export const fetchOfferAction = createAsyncThunk<void, string ,{
@@ -71,8 +103,6 @@ export const fetchOffersNearbyAction = createAsyncThunk<void, string ,{
     dispatch(setDataLoadedStatus(true));
     dispatch(loadOffersNearby(data));
     dispatch(setDataLoadedStatus(false));
-
-
   },
 );
 
@@ -87,8 +117,6 @@ export const fetchReviewsAction = createAsyncThunk<void, string ,{
     dispatch(setDataLoadedStatus(true));
     dispatch(loadReveiws(data));
     dispatch(setDataLoadedStatus(false));
-
-
   },
 );
 
@@ -100,10 +128,12 @@ export const checkAuthAction = createAsyncThunk<void, undefined, {
   'user/checkAuth',
   async (_arg, {dispatch, extra: api}) => {
     try {
-      await api.get(APIRoute.Login);
+      const {data} = await api.get(APIRoute.Login);
+      dispatch(setUserEmail(data.email));
       dispatch(requireAuthorization(AuthorizationStatus.Auth));
     } catch {
       dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
+      dispatch(setUserEmail(''));
     }
   },
 );
@@ -118,6 +148,7 @@ export const loginAction = createAsyncThunk<void, AuthData, {
     const {data: {token}} = await api.post<User>(APIRoute.Login, {email, password});
     saveToken(token);
     dispatch(requireAuthorization(AuthorizationStatus.Auth));
+    dispatch(setUserEmail(email));
     dispatch(redirectToRoute(AppRoute.Main));
   },
 );
@@ -130,7 +161,6 @@ export const commentAction = createAsyncThunk<void, CommentData, {
   'user/comment',
   async ({id, rating, comment}, {extra: api}) => {
     await api.post<CommentData>(`${APIRoute.Comments}/${id}`, {rating, comment});
-
   },
 );
 
@@ -143,6 +173,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
   async (_arg, {dispatch, extra: api}) => {
     await api.delete(APIRoute.Logout);
     dropToken();
+    dispatch(setUserEmail(''));
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     dispatch(redirectToRoute(AppRoute.Login));
   },

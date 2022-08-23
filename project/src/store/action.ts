@@ -1,7 +1,6 @@
 import {createAction} from '@reduxjs/toolkit';
 import {Offer} from '../types/offer';
 import {Review} from '../types/review';
-// import {CommentData} from '../types/user';
 import {AuthorizationStatus, AppRoute} from '../const';
 
 export const changeCity = createAction('main/changeCity', (cityName) => ({
@@ -20,10 +19,6 @@ export const changeSelectedOffer = createAction('main/changeSelectedOffer', (new
   payload: newOffer,
 }));
 
-export const setFavoriteOffer = createAction('property/setFavoriteOffer', (isFavorite) => ({
-  payload: isFavorite,
-}));
-
 export const getFavoriteCount = createAction('property/getFavoriteCount');
 
 export const loadOffers = createAction<Offer[]>('data/loadOffers');
@@ -34,9 +29,11 @@ export const loadOffersNearby = createAction<Offer[]>('data/loadOffersNearby');
 
 export const loadReveiws = createAction<Review[]>('data/loadReveiws');
 
-// export const addReveiw = createAction<CommentData>('data/addReveiw');
+export const loadFavorites = createAction<Offer[]>('data/loadFavorites');
 
 export const setIdOffer = createAction<number>('property/setIdOffer');
+
+export const setUserEmail = createAction<string>('login/setUserEmail');
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 
