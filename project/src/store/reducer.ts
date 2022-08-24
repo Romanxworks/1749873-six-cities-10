@@ -17,7 +17,10 @@ import {changeCity,
   setIdOffer,
   loadOffersNearby,
   loadFavorites,
-  setUserEmail
+  setUserEmail,
+  clearFavorites,
+  changeFavorites,
+  deleteFavorites
 } from '../store/action';
 
 
@@ -26,11 +29,12 @@ type InitialState = {
   offers: Offer[],
   email: string,
   offersNearby: Offer[],
-  id: number,
+  id: string | undefined,
   offersByCity: Offer[],
   offer: Offer | null,
   reviews: Review[],
   favorites: Offer[],
+  isFavorite: boolean | undefined;
   selectedOffer: Offer | null,
   favoriteCount: number,
   authorizationStatus: AuthorizationStatus,
@@ -48,7 +52,8 @@ const initialState: InitialState = {
   email: '',
   reviews: [],
   favorites: [],
-  id: 0,
+  isFavorite: false,
+  id: '',
   favoriteCount: 0,
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
@@ -85,6 +90,18 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(loadFavorites, (state, action) => {
       state.favorites = action.payload;
       state.favoriteCount = action.payload.length;
+    })
+    .addCase(deleteFavorites, (state, action) => {
+      const id = Number(action.payload);
+      state.favorites = state.favorites.filter((favorite) =>favorite.id !== id) ;
+      state.favoriteCount = state.favorites.length;
+    })
+    .addCase(clearFavorites, (state) => {
+      state.favorites = [];
+      state.favoriteCount = 0;
+    })
+    .addCase(changeFavorites, (state, action) => {
+      state.isFavorite = action.payload;
     })
     .addCase(loadOffersNearby, (state, action) => {
       state.offersNearby = action.payload;

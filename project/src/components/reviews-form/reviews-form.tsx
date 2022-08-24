@@ -31,7 +31,6 @@ function ReviewsForm({id}:ReviewFormProps):JSX.Element{
     if (rating !== null && commentRef.current !== null) {
       onSubmit({id, rating, comment: commentRef.current.value });
       commentRef.current.value = '';
-      setChecked(false);
     }
   };
   return (

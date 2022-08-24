@@ -5,7 +5,10 @@ import {RATING_ADAPTER, AuthorizationStatus, AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {useState} from 'react';
 import {changeSelectedOffer, redirectToRoute} from '../../store/action';
-import {fetchSetFavoriteAction, fetchFavoriteAction} from '../../store/api-actions';
+import {
+  fetchSetFavoriteAction,
+  fetchFavoriteAction,
+} from '../../store/api-actions';
 
 type CitiesCardProps = {
   offer: Offer;
@@ -19,13 +22,12 @@ function CitiesCard({offer}:CitiesCardProps):JSX.Element{
   const isLogin = status === AuthorizationStatus.Auth;
 
   const handleCardActive = () => (dispatch(changeSelectedOffer(offer)));
-
+  const idForFetch = String(id);
   const handleClickFavorite = () => {
     if(isLogin){
       const updatedIsFavorite = !isFavoriteStatus;
       setFavoriteStatus(updatedIsFavorite);
       const favoriteStatus = Number(updatedIsFavorite);
-      const idForFetch = String(id);
       dispatch(fetchSetFavoriteAction({id:idForFetch,status:favoriteStatus}));
       dispatch(fetchFavoriteAction());
     }else{

@@ -3,7 +3,7 @@ import {useRef, FormEvent, SyntheticEvent} from 'react';
 import Header from '../../components/header/header';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {AppRoute, AuthorizationStatus} from '../../const';
-import {loginAction} from '../../store/api-actions';
+import {loginAction, fetchFavoriteAction} from '../../store/api-actions';
 import {AuthData} from '../../types/user';
 import {getRandomInteger} from '../../utils';
 import {changeCity, redirectToRoute, getOffersByCity} from '../../store/action';
@@ -22,6 +22,7 @@ function LoginPage(): JSX.Element {
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
+    dispatch(fetchFavoriteAction());
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {

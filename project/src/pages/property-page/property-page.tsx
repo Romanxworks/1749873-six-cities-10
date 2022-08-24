@@ -1,19 +1,19 @@
 import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
-import {useEffect, useState} from 'react';
+import {useEffect} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {AuthorizationStatus, RATING_ADAPTER, AppRoute, MAX_IMAGES_COUNT} from '../../const';
 import ReviewOffer from '../../components/review/review';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {redirectToRoute} from '../../store/action';
+import {redirectToRoute, changeSelectedOffer, changeFavorites} from '../../store/action';
 import {
   fetchOfferAction,
   fetchOffersNearbyAction,
-  fetchReviewsAction,
   fetchFavoriteAction,
-  fetchSetFavoriteAction
+  fetchSetFavoriteAction,
+  fetchOffersAction
 } from '../../store/api-actions';
 
 function PropertyPage():JSX.Element {
@@ -22,24 +22,35 @@ function PropertyPage():JSX.Element {
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => (state.authorizationStatus));
   const isLogin = status === AuthorizationStatus.Auth;
+
   useEffect(()=>{
     dispatch(fetchOfferAction(id));
     dispatch(fetchOffersNearbyAction(id));
-    dispatch(fetchReviewsAction(id));
+
   },[id, dispatch]);
 
   const offerById = useAppSelector((state) => (state.offer));
-  const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
+  // const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
+  dispatch(changeSelectedOffer(offerById));
   const restOffers = useAppSelector((state) => (state.offersNearby));
   const reviews = useAppSelector((state) => (state.reviews));
+  useEffect(() => {
+    dispatch(changeFavorites(offerById?.isFavorite));
+  },[offerById, dispatch, id]
 
+  );
+  const varFavorire = useAppSelector((state) => (state.isFavorite));
+  // console.log(varFavorire);
   const handleClickFavorite = () => {
     if(isLogin){
-      const updatedIsFavorite = !isFavorite;
-      setFavorite(updatedIsFavorite);
-      const favoriteStatus = Number(updatedIsFavorite);
+      // setFavorite(!offerById?.isFavorite);
+      dispatch(changeFavorites(!varFavorire));
+
+      // console.log(offerById?.isFavorite);
+      const favoriteStatus = Number(!offerById?.isFavorite);
       dispatch(fetchSetFavoriteAction({id,status:favoriteStatus}));
       dispatch(fetchFavoriteAction());
+      dispatch(fetchOffersAction());
     }else{
       dispatch(redirectToRoute(AppRoute.Login));
     }
@@ -71,7 +82,7 @@ function PropertyPage():JSX.Element {
                 <h1 className="property__name">
                   {offerById?.title}
                 </h1>
-                <button className={`property__bookmark-button ${isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
+                <button className={`property__bookmark-button ${varFavorire && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
                   <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -135,7 +146,7 @@ function PropertyPage():JSX.Element {
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
 
-                <ReviewOffer id = {id}/>
+                <ReviewOffer id = {id} />
 
                 {status === AuthorizationStatus.Auth ? <ReviewsForm id = {id} /> : null}
 

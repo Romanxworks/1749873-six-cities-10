@@ -12,7 +12,9 @@ import {
   loadOffersNearby,
   loadReveiws,
   loadFavorites,
-  setUserEmail
+  setUserEmail,
+  clearFavorites,
+  deleteFavorites
 } from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute, TIMEOUT_SHOW_ERROR} from '../const';
@@ -69,8 +71,11 @@ export const fetchSetFavoriteAction = createAsyncThunk<void, FavoriteData, {
   extra: AxiosInstance
 }>(
   'data/fetchSetFavorite',
-  async ({id, status}, {extra: api}) => {
+  async ({id, status}, {dispatch, extra: api}) => {
     await api.post<Offer>(`${APIRoute.Favorite}/${id}/${status}`);
+    if(status === 0){
+      dispatch(deleteFavorites(id));
+    }
   }
 );
 
@@ -174,6 +179,7 @@ export const logoutAction = createAsyncThunk<void, undefined, {
     await api.delete(APIRoute.Logout);
     dropToken();
     dispatch(setUserEmail(''));
+    dispatch(clearFavorites());
     dispatch(requireAuthorization(AuthorizationStatus.NoAuth));
     dispatch(redirectToRoute(AppRoute.Login));
   },
