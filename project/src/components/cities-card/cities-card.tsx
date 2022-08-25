@@ -4,7 +4,7 @@ import {Link} from 'react-router-dom';
 import {RATING_ADAPTER, AuthorizationStatus, AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {useState} from 'react';
-import {changeSelectedOffer, redirectToRoute} from '../../store/action';
+import {changeSelectedOffer, loadOffer, redirectToRoute} from '../../store/action';
 import {
   fetchSetFavoriteAction,
   fetchFavoriteAction,
@@ -23,6 +23,7 @@ function CitiesCard({offer}:CitiesCardProps):JSX.Element{
   const isLogin = status === AuthorizationStatus.Auth;
 
   const handleCardActive = () => (dispatch(changeSelectedOffer(offer)));
+
   const idForFetch = String(id);
   const handleClickFavorite = () => {
     if(isLogin){
@@ -38,6 +39,7 @@ function CitiesCard({offer}:CitiesCardProps):JSX.Element{
   };
 
   const handleClickLink = () => {
+    dispatch(loadOffer(offer));
     window.scrollTo({
       top: 0
     });

@@ -27,9 +27,7 @@ function Map({containerHeigth, isMain}:MapProps):JSX.Element{
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => (state.offersByCity));
   const offersNearby = useAppSelector((state) => (state.offersNearby));
-  const offerById = useAppSelector((state) => (state.offer));
   const selectedOffer = useAppSelector((state) => (state.selectedOffer));
-
   const map = useMap(mapRef, city);
 
   useEffect(() => {
@@ -48,22 +46,22 @@ function Map({containerHeigth, isMain}:MapProps):JSX.Element{
             )
             .addTo(map);}
         );}else{
-        if(offerById){
-          map.panTo({lat:offerById.location.latitude, lng:offerById.location.longitude});
-          const allOffersNearby = [...offersNearby,offerById];
-          console.log(allOffersNearby);
+        if(selectedOffer){
+          map.panTo({lat:selectedOffer.location.latitude, lng:selectedOffer.location.longitude});
+          const allOffersNearby = [...offersNearby,selectedOffer];
           allOffersNearby.forEach((offer) => {
             const marker = new Marker({
               lat: offer.location.latitude,
               lng: offer.location.longitude
             });
             marker
-              .setIcon(offer.id === offerById.id ? currentCustomIcon : defaultCustomIcon)
+              .setIcon(offer.id === selectedOffer.id ? currentCustomIcon : defaultCustomIcon)
               .addTo(map);
           });
+
         }}
     }
-  }, [map, offers, selectedOffer, city, isMain, offerById, offersNearby, containerHeigth]);
+  }, [map, offers, selectedOffer, city, isMain, offersNearby, containerHeigth]);
 
   return (
     <div

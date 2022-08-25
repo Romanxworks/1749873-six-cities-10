@@ -1,13 +1,20 @@
 import {Link} from 'react-router-dom';
 import {CITY} from '../../mocks/city';
 import {City} from '../../types/map';
+import {useAppDispatch} from '../../hooks';
+import {changeCity, getOffersByCity} from '../../store/action';
 
 type LocationProps = {
   selectedCity: City,
-  onClickCity: (cityName:City) => void;
 }
 
-function Location ({selectedCity, onClickCity}:LocationProps): JSX.Element{
+function Location ({selectedCity}:LocationProps): JSX.Element{
+  const dispatch = useAppDispatch();
+
+  const onClickCity = (city:City) => {
+    dispatch(changeCity(city));
+    dispatch(getOffersByCity(city));
+  };
 
   return(
     <ul className="locations__list tabs__list">

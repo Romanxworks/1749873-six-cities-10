@@ -2,23 +2,15 @@ import Header from '../../components/header/header';
 import CitiesCard from '../../components/cities-card/cities-card';
 import Location from '../../components/location/location';
 import Map from '../../components/map/map';
-import {City} from '../../types/map';
-import {useAppDispatch, useAppSelector} from '../../hooks';
-import {changeCity, getOffersByCity} from '../../store/action';
+import {useAppSelector} from '../../hooks';
 import MainEmpty from '../../components/main-empty/main-empty';
 import MainSort from '../../components/main-sort/main-sort';
 
 function MainPage():JSX.Element{
 
-  const dispatch = useAppDispatch();
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => (state.offersByCity));
   const isOffers = offers.length === 0;
-
-  const onClickCity = (cityName:City) => {
-    dispatch(changeCity(cityName));
-    dispatch(getOffersByCity(cityName));
-  };
 
   return (
     <div className="page page--gray page--main">
@@ -27,7 +19,7 @@ function MainPage():JSX.Element{
         <h1 className="visually-hidden">Cities</h1>
         <div className="tabs">
           <section className="locations container">
-            <Location selectedCity = {city} onClickCity = {onClickCity} />
+            <Location selectedCity = {city} />
           </section>
         </div>
         <div className="cities">
