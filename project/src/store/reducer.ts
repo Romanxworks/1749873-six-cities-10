@@ -82,7 +82,7 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
-      state.offersByCity = state.offers.filter((offer)=>offer.city.name === CITY[0].name);
+      state.offersByCity = state.offers.filter((offer)=>offer.city.name === state.city.name);
     })
     .addCase(loadOffer, (state, action) => {
       state.offer = action.payload;

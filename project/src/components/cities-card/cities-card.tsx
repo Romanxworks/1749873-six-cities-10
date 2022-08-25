@@ -8,6 +8,7 @@ import {changeSelectedOffer, redirectToRoute} from '../../store/action';
 import {
   fetchSetFavoriteAction,
   fetchFavoriteAction,
+  fetchOffersAction
 } from '../../store/api-actions';
 
 type CitiesCardProps = {
@@ -30,6 +31,7 @@ function CitiesCard({offer}:CitiesCardProps):JSX.Element{
       const favoriteStatus = Number(updatedIsFavorite);
       dispatch(fetchSetFavoriteAction({id:idForFetch,status:favoriteStatus}));
       dispatch(fetchFavoriteAction());
+      dispatch(fetchOffersAction());
     }else{
       dispatch(redirectToRoute(AppRoute.Login));
     }

@@ -25,11 +25,10 @@ const currentCustomIcon = new Icon({
 function Map({containerHeigth, isMain}:MapProps):JSX.Element{
   const mapRef = useRef(null);
   const city = useAppSelector((state) => state.city);
-  const offersByCity = useAppSelector((state) => (state.offersByCity));
+  const offers = useAppSelector((state) => (state.offersByCity));
   const offersNearby = useAppSelector((state) => (state.offersNearby));
   const offerById = useAppSelector((state) => (state.offer));
   const selectedOffer = useAppSelector((state) => (state.selectedOffer));
-  const offers = offersByCity;
 
   const map = useMap(mapRef, city);
 
@@ -42,17 +41,17 @@ function Map({containerHeigth, isMain}:MapProps):JSX.Element{
             lat: offer.location.latitude,
             lng: offer.location.longitude
           });
-          if(selectedOffer){
-            marker
-              .setIcon(selectedOffer !== undefined && offer.id === selectedOffer.id
-                ? currentCustomIcon
-                : defaultCustomIcon
-              )
-              .addTo(map);}
-        });}else{
+          marker
+            .setIcon(selectedOffer !== undefined && offer.id === selectedOffer?.id
+              ? currentCustomIcon
+              : defaultCustomIcon
+            )
+            .addTo(map);}
+        );}else{
         if(offerById){
           map.panTo({lat:offerById.location.latitude, lng:offerById.location.longitude});
           const allOffersNearby = [...offersNearby,offerById];
+          console.log(allOffersNearby);
           allOffersNearby.forEach((offer) => {
             const marker = new Marker({
               lat: offer.location.latitude,
@@ -64,7 +63,7 @@ function Map({containerHeigth, isMain}:MapProps):JSX.Element{
           });
         }}
     }
-  }, [map, offers, selectedOffer, city, isMain, offerById, offersNearby]);
+  }, [map, offers, selectedOffer, city, isMain, offerById, offersNearby, containerHeigth]);
 
   return (
     <div

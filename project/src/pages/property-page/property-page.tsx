@@ -30,7 +30,6 @@ function PropertyPage():JSX.Element {
   },[id, dispatch]);
 
   const offerById = useAppSelector((state) => (state.offer));
-  // const [isFavorite, setFavorite] = useState(offerById?.isFavorite);
   dispatch(changeSelectedOffer(offerById));
   const restOffers = useAppSelector((state) => (state.offersNearby));
   const reviews = useAppSelector((state) => (state.reviews));
@@ -39,14 +38,10 @@ function PropertyPage():JSX.Element {
   },[offerById, dispatch, id]
 
   );
-  const varFavorire = useAppSelector((state) => (state.isFavorite));
-  // console.log(varFavorire);
+  const isFavorite = useAppSelector((state) => (state.isFavorite));
   const handleClickFavorite = () => {
     if(isLogin){
-      // setFavorite(!offerById?.isFavorite);
-      dispatch(changeFavorites(!varFavorire));
-
-      // console.log(offerById?.isFavorite);
+      dispatch(changeFavorites(!isFavorite));
       const favoriteStatus = Number(!offerById?.isFavorite);
       dispatch(fetchSetFavoriteAction({id,status:favoriteStatus}));
       dispatch(fetchFavoriteAction());
@@ -82,7 +77,7 @@ function PropertyPage():JSX.Element {
                 <h1 className="property__name">
                   {offerById?.title}
                 </h1>
-                <button className={`property__bookmark-button ${varFavorire && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
+                <button className={`property__bookmark-button ${isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
                   <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
