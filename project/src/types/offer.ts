@@ -1,5 +1,5 @@
 import {User} from './user';
-
+import {City} from './map';
 export type Offer = {
     id: number;
     images: string[];
@@ -20,13 +20,6 @@ export type Offer = {
         zoom: number
     };
     reviews: number[];
-    city: {
-        location: {
-        latitude: number
-        longitude: number
-        zoom: number
-        }
-        name: string
-    };
+    city: City;
     previewImage: string
 }

@@ -1,9 +1,8 @@
 import HeaderNavigation from '../header-navigation/header-navigation';
 import {Link, useLocation} from 'react-router-dom';
-import {AppRoute} from '../../const';
+import {AppRoute, CITY} from '../../const';
 import {useAppDispatch} from '../../hooks';
 import {changeCity, getOffersByCity} from '../../store/action';
-import {CITY} from '../../mocks/city';
 import {fetchOffersAction} from '../../store/api-actions';
 
 function Header ():JSX.Element{

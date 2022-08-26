@@ -17,11 +17,8 @@ function MainPage():JSX.Element{
       <Header />
       <main className={`page__main page__main--index ${isOffers && 'page__main--index-empty'}`}>
         <h1 className="visually-hidden">Cities</h1>
-        <div className="tabs">
-          <section className="locations container">
-            <Location selectedCity = {city} />
-          </section>
-        </div>
+        <Location selectedCity = {city} />
+
         <div className="cities">
           {isOffers ? <MainEmpty cityName={city.name}/> :
             <div className="cities__places-container container">
@@ -30,7 +27,7 @@ function MainPage():JSX.Element{
                 <b className="places__found">{offers.length} places to stay in {city.name}</b>
                 <MainSort />
                 <div className="cities__places-list places__list tabs__content">
-                  {!isOffers ? offers.map((offer) => (<CitiesCard offer = {offer} key = {offer.id} />)) : ''}
+                  {!isOffers && offers.map((offer) => (<CitiesCard offer = {offer} key = {offer.id} />))}
                 </div>
               </section>
               <div className="cities__right-section">

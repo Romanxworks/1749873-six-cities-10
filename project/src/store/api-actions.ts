@@ -13,19 +13,14 @@ import {
   loadReveiws,
   loadFavorites,
   setUserEmail,
-  clearFavorites,
-  deleteFavorites
+  clearFavorites
 } from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute, TIMEOUT_SHOW_ERROR} from '../const';
 import {User, AuthData, CommentData} from '../types/user.js';
 import {store} from './';
-import {Review} from '../types/review.js';
+import {Review, FavoriteData} from '../types/review.js';
 
-type FavoriteData = {
-  id: string,
-  status: number
-}
 
 export const clearErrorAction = createAsyncThunk(
   'main/clearError',
@@ -65,19 +60,6 @@ export const fetchFavoriteAction = createAsyncThunk<void, undefined, {
   }
 );
 
-export const fetchSetFavoriteAction = createAsyncThunk<void, FavoriteData, {
-  dispatch: AppDispatch,
-  state: State,
-  extra: AxiosInstance
-}>(
-  'data/fetchSetFavorite',
-  async ({id, status}, {dispatch, extra: api}) => {
-    await api.post<Offer>(`${APIRoute.Favorite}/${id}/${status}`);
-    if(status === 0){
-      dispatch(deleteFavorites(id));
-    }
-  }
-);
 
 export const fetchOfferAction = createAsyncThunk<void, string ,{
   dispatch: AppDispatch,
@@ -123,6 +105,20 @@ export const fetchReviewsAction = createAsyncThunk<void, string ,{
     dispatch(loadReveiws(data));
     dispatch(setDataLoadedStatus(false));
   },
+);
+
+export const fetchSetFavoriteAction = createAsyncThunk<void, FavoriteData, {
+  dispatch: AppDispatch,
+  state: State,
+  extra: AxiosInstance
+}>(
+  'data/fetchSetFavorite',
+  async ({id, status}, {dispatch, extra: api}) => {
+    const fetchStatus = Number(status);
+    await api.post<Offer>(`${APIRoute.Favorite}/${id}/${fetchStatus}`);
+    dispatch(fetchFavoriteAction());
+    dispatch(fetchOffersAction());
+  }
 );
 
 export const checkAuthAction = createAsyncThunk<void, undefined, {

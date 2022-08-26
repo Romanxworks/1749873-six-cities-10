@@ -3,7 +3,7 @@ import FavoriteCard from '../favorite-card/favorite-card';
 import {useAppDispatch} from '../../hooks';
 import {City} from '../../types/map';
 import {Offer} from '../../types/offer';
-import {changeCity} from '../../store/action';
+import {changeCity, getOffersByCity} from '../../store/action';
 
 type FavoriteItemProps = {
   city:City,
@@ -14,6 +14,7 @@ function FavoriteItem ({city, favorites}:FavoriteItemProps):JSX.Element{
   const dispatch = useAppDispatch();
   const handleClickName = () =>{
     dispatch(changeCity(city));
+    dispatch(getOffersByCity(city));
   };
   return(
     <li className="favorites__locations-items">

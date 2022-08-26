@@ -1,9 +1,8 @@
 import {createReducer} from '@reduxjs/toolkit';
-import {CITY} from '../mocks/city';
 import {City} from '../types/map';
 import {Offer} from '../types/offer';
 import {Review} from '../types/review';
-import {AuthorizationStatus} from '../const';
+import {AuthorizationStatus, CITY} from '../const';
 import {changeCity,
   getOffersByCity,
   changeOffers,

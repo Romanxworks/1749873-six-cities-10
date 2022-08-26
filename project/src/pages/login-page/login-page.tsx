@@ -1,13 +1,13 @@
 import {Link} from 'react-router-dom';
-import {useRef, FormEvent, SyntheticEvent} from 'react';
+import {useRef, FormEvent, SyntheticEvent, useEffect} from 'react';
 import Header from '../../components/header/header';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {AppRoute, AuthorizationStatus} from '../../const';
+import {AppRoute, AuthorizationStatus, CITY} from '../../const';
 import {loginAction, fetchFavoriteAction} from '../../store/api-actions';
 import {AuthData} from '../../types/user';
 import {getRandomInteger} from '../../utils';
 import {changeCity, redirectToRoute, getOffersByCity} from '../../store/action';
-import {CITY} from '../../mocks/city';
+
 
 function LoginPage(): JSX.Element {
   const emailRef = useRef<HTMLInputElement | null>(null);
@@ -15,10 +15,12 @@ function LoginPage(): JSX.Element {
   const authStatus = useAppSelector((state) => (state.authorizationStatus));
   const randomCityName = CITY[getRandomInteger(0,(CITY.length - 1))];
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    if(authStatus === AuthorizationStatus.Auth){
+      dispatch(redirectToRoute(AppRoute.Main));
+    }
+  },[dispatch,authStatus]);
 
-  if(authStatus === AuthorizationStatus.Auth){
-    dispatch(redirectToRoute(AppRoute.Main));
-  }
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));

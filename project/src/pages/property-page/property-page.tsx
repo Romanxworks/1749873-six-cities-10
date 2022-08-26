@@ -2,18 +2,19 @@ import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
 import {useEffect} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
-import {AuthorizationStatus, RATING_ADAPTER, AppRoute, MAX_IMAGES_COUNT} from '../../const';
+import {AuthorizationStatus, RATING_ADAPTER, AppRoute} from '../../const';
 import ReviewOffer from '../../components/review/review';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
+import PropertyGallery from '../../components/property-gallery/property-gallery';
+import PropertyInsideList from '../../components/property-inside-list/property-inside-list';
+import PropertyHostUser from '../../components/property-host-user/property-host-user';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {redirectToRoute, changeSelectedOffer, changeFavorites} from '../../store/action';
 import {
   fetchOfferAction,
   fetchOffersNearbyAction,
-  fetchFavoriteAction,
   fetchSetFavoriteAction,
-  fetchOffersAction
 } from '../../store/api-actions';
 
 function PropertyPage():JSX.Element {
@@ -30,22 +31,24 @@ function PropertyPage():JSX.Element {
   },[id, dispatch]);
 
   const offerById = useAppSelector((state) => (state.offer));
+
   dispatch(changeSelectedOffer(offerById));
+
   const restOffers = useAppSelector((state) => (state.offersNearby));
   const reviews = useAppSelector((state) => (state.reviews));
+
   useEffect(() => {
     dispatch(changeFavorites(offerById?.isFavorite));
   },[offerById, dispatch, id]
 
   );
   const isFavorite = useAppSelector((state) => (state.isFavorite));
+
   const handleClickFavorite = () => {
     if(isLogin){
       dispatch(changeFavorites(!isFavorite));
-      const favoriteStatus = Number(!offerById?.isFavorite);
+      const favoriteStatus = !offerById?.isFavorite;
       dispatch(fetchSetFavoriteAction({id,status:favoriteStatus}));
-      dispatch(fetchFavoriteAction());
-      dispatch(fetchOffersAction());
     }else{
       dispatch(redirectToRoute(AppRoute.Login));
     }
@@ -57,19 +60,7 @@ function PropertyPage():JSX.Element {
 
       <main className="page__main page__main--property">
         <section className="property">
-          <div className="property__gallery-container container">
-            <div className="property__gallery">
-              {offerById?.images.slice(0,MAX_IMAGES_COUNT).map((image, i) => {
-                const keyValue = `o-${image}-${i}`;
-                return(
-                  <div key={keyValue} className="property__image-wrapper">
-                    <img className="property__image" src = {image} alt = {offerById?.type}/>
-                  </div>
-                );
-              })}
-
-            </div>
-          </div>
+          <PropertyGallery images = {offerById?.images} type = {offerById?.type} />
           <div className="property__container container">
             <div className="property__wrapper">
               {offerById?.isPremium && <div className="property__mark"><span>Premium</span></div>}
@@ -108,30 +99,11 @@ function PropertyPage():JSX.Element {
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
-                <ul className="property__inside-list">
-                  {offerById?.goods.map((good) => {
-                    const keyValue = `o-${good}`;
-                    return(
-
-                      <li key={keyValue} className="property__inside-item">
-                        {good}
-                      </li>
-                    );
-                  })}
-
-                </ul>
+                <PropertyInsideList goods = {offerById?.goods}/>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
-                <div className="property__host-user user">
-                  <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src = {offerById?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
-                  </div>
-                  <span className="property__user-name">
-                    {offerById?.host.name}
-                  </span>
-                  {offerById?.host.isPro && <span className="property__user-status">Pro</span>}
-                </div>
+                <PropertyHostUser host = {offerById?.host}/>
                 <div className="property__description">
                   <p className="property__text">
                     {offerById?.description}

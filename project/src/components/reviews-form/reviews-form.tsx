@@ -8,7 +8,7 @@ type ReviewFormProps = {
 }
 
 function ReviewsForm({id}:ReviewFormProps):JSX.Element{
-  const [rating, setRating] = useState<number>(1);
+  const [rating, setRating] = useState<number>(0);
   const [isChecked, setChecked] = useState(false);
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
   const submitRef = useRef<HTMLButtonElement | null>(null);
@@ -32,6 +32,7 @@ function ReviewsForm({id}:ReviewFormProps):JSX.Element{
   const onSubmit = (commentData: CommentData) => {
     dispatch(commentAction(commentData));
     dispatch(fetchReviewsAction(id));
+    setRating(0);
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {

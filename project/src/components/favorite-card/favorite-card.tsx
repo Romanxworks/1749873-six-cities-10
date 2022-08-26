@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import {Offer} from '../../types/offer';
 import {RATING_ADAPTER} from '../../const';
 import PremiumFlag from '../premium-flag/premium-flag';
-import {fetchSetFavoriteAction, fetchFavoriteAction} from '../../store/api-actions';
+import {fetchSetFavoriteAction} from '../../store/api-actions';
 import {useAppDispatch} from '../../hooks';
 
 type FavoriteCardProps ={
@@ -14,8 +14,7 @@ function FavoriteCard ({offer}:FavoriteCardProps):JSX.Element{
   const dispatch = useAppDispatch();
   const idForFetch = String(id);
   const handleClickFavorite = () => {
-    dispatch(fetchSetFavoriteAction({id:idForFetch, status:0}));
-    dispatch(fetchFavoriteAction());
+    dispatch(fetchSetFavoriteAction({id:idForFetch, status:false}));
   };
 
   return(
