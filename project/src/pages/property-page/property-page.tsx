@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
-import {useEffect} from 'react';
+import {useEffect, useState} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {AuthorizationStatus, RATING_ADAPTER, AppRoute} from '../../const';
 import ReviewOffer from '../../components/review/review';
@@ -10,7 +10,7 @@ import PropertyGallery from '../../components/property-gallery/property-gallery'
 import PropertyInsideList from '../../components/property-inside-list/property-inside-list';
 import PropertyHostUser from '../../components/property-host-user/property-host-user';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {redirectToRoute, changeSelectedOffer, changeFavorites} from '../../store/action';
+import {redirectToRoute, changeSelectedOffer} from '../../store/action';
 import {
   fetchOfferAction,
   fetchOffersNearbyAction,
@@ -31,23 +31,17 @@ function PropertyPage():JSX.Element {
   },[id, dispatch]);
 
   const offerById = useAppSelector((state) => (state.offer));
-
-  dispatch(changeSelectedOffer(offerById));
-
   const restOffers = useAppSelector((state) => (state.offersNearby));
   const reviews = useAppSelector((state) => (state.reviews));
+  const {images, isPremium, price, rating, title, type, bedrooms, maxAdults, goods, host, description, isFavorite} = offerById;
 
-  useEffect(() => {
-    dispatch(changeFavorites(offerById?.isFavorite));
-  },[offerById, dispatch, id]
-
-  );
-  const isFavorite = useAppSelector((state) => (state.isFavorite));
+  dispatch(changeSelectedOffer(offerById));////////
+  const [isFavoriteState, setFavoriteState] = useState(isFavorite);
 
   const handleClickFavorite = () => {
     if(isLogin){
-      dispatch(changeFavorites(!isFavorite));
-      const favoriteStatus = !offerById?.isFavorite;
+      setFavoriteState(!isFavoriteState);
+      const favoriteStatus = !isFavorite;
       dispatch(fetchSetFavoriteAction({id,status:favoriteStatus}));
     }else{
       dispatch(redirectToRoute(AppRoute.Login));
@@ -60,15 +54,15 @@ function PropertyPage():JSX.Element {
 
       <main className="page__main page__main--property">
         <section className="property">
-          <PropertyGallery images = {offerById?.images} type = {offerById?.type} />
+          <PropertyGallery images = {images} type = {type} />
           <div className="property__container container">
             <div className="property__wrapper">
-              {offerById?.isPremium && <div className="property__mark"><span>Premium</span></div>}
+              {isPremium && <div className="property__mark"><span>Premium</span></div>}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  {offerById?.title}
+                  {title}
                 </h1>
-                <button className={`property__bookmark-button ${isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
+                <button className={`property__bookmark-button ${isFavoriteState && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
                   <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -77,36 +71,36 @@ function PropertyPage():JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: `${offerById ? offerById.rating / RATING_ADAPTER : null}%`}}></span>
+                  <span style={{width: `${rating / RATING_ADAPTER}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">{offerById?.rating}</span>
+                <span className="property__rating-value rating__value">{rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {offerById?.type}
+                  {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {offerById?.bedrooms} Bedrooms
+                  {bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                 Max {offerById?.maxAdults} adults
+                 Max {maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;{offerById?.price}</b>
+                <b className="property__price-value">&euro;{price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
-                <PropertyInsideList goods = {offerById?.goods}/>
+                <PropertyInsideList goods = {goods}/>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
-                <PropertyHostUser host = {offerById?.host}/>
+                <PropertyHostUser host = {host}/>
                 <div className="property__description">
                   <p className="property__text">
-                    {offerById?.description}
+                    {description}
                   </p>
                 </div>
               </div>
@@ -121,7 +115,7 @@ function PropertyPage():JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            { offerById && <Map containerHeigth = {600} isMain ={false} />}
+            <Map containerHeigth = {600} isMain ={false} />
           </section>
         </section>
         <div className="container">

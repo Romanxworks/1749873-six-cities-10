@@ -1,6 +1,6 @@
 import {useState, SyntheticEvent} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {changeOffers, getOffersByCity} from '../../store/action';
+import {changeOffersByCity, getOffersByCity} from '../../store/action';
 import {sortByPriceToLow, sortByPriceToHigh, sortByRating} from '../../utils';
 
 function MainSort ():JSX.Element{
@@ -19,15 +19,15 @@ function MainSort ():JSX.Element{
     switch (currentTarget.dataset.sort) {
       case 'PriceLow':
         sortOffers.sort(sortByPriceToLow);
-        dispatch(changeOffers(sortOffers));
+        dispatch(changeOffersByCity(sortOffers));
         break;
       case 'PriceHigh':
         sortOffers.sort(sortByPriceToHigh);
-        dispatch(changeOffers(sortOffers));
+        dispatch(changeOffersByCity(sortOffers));
         break;
       case 'Rated':
         sortOffers.sort(sortByRating);
-        dispatch(changeOffers(sortOffers));
+        dispatch(changeOffersByCity(sortOffers));
         break;
       case 'Popular':
         dispatch(getOffersByCity(city));

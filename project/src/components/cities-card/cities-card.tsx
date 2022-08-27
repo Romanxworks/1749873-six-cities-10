@@ -15,6 +15,7 @@ type CitiesCardProps = {
 
 function CitiesCard({offer}:CitiesCardProps):JSX.Element{
   const {previewImage, isPremium, price, rating, title, type, id, isFavorite} = offer;
+
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const dispatch = useAppDispatch();
   const status = useAppSelector((state) => (state.authorizationStatus));

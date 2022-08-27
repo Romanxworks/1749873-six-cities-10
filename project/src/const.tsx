@@ -90,3 +90,41 @@ export const CITY :City[] = [
     name: 'Dusseldorf'
   },
 ];
+
+export const BLANK_OFFER = {
+  id: 0,
+  images: [],
+  title: '',
+  description: '',
+  type: '',
+  bedrooms: 0,
+  maxAdults: 0,
+  goods: [],
+  host: {
+    id: 0,
+    name: '',
+    email: '',
+    avatarUrl: '',
+    isPro: false,
+    token: '',
+  },
+  rating: 0,
+  isFavorite: false,
+  isPremium: false,
+  price: 0,
+  location: {
+    latitude: 0,
+    longitude: 0,
+    zoom: 0
+  },
+  reviews: [],
+  city: {
+    name: '',
+    location:{
+      latitude: 0,
+      longitude: 0,
+      zoom: 0
+    }
+  },
+  previewImage: ''
+};

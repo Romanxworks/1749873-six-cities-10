@@ -13,7 +13,10 @@ import {
   loadReveiws,
   loadFavorites,
   setUserEmail,
-  clearFavorites
+  clearFavorites,
+  changeOffers,
+  addFavorite,
+  deleteFavorites
 } from './action';
 import {saveToken, dropToken} from '../services/token';
 import {APIRoute, AuthorizationStatus, AppRoute, TIMEOUT_SHOW_ERROR} from '../const';
@@ -115,9 +118,13 @@ export const fetchSetFavoriteAction = createAsyncThunk<void, FavoriteData, {
   'data/fetchSetFavorite',
   async ({id, status}, {dispatch, extra: api}) => {
     const fetchStatus = Number(status);
-    await api.post<Offer>(`${APIRoute.Favorite}/${id}/${fetchStatus}`);
-    dispatch(fetchFavoriteAction());
-    dispatch(fetchOffersAction());
+    const {data} = await api.post<Offer>(`${APIRoute.Favorite}/${id}/${fetchStatus}`);
+    dispatch(changeOffers(data));
+    if(status){
+      dispatch(addFavorite(data));
+    }else{
+      dispatch(deleteFavorites(id));
+    }
   }
 );
 

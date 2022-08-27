@@ -2,24 +2,24 @@ import {createReducer} from '@reduxjs/toolkit';
 import {City} from '../types/map';
 import {Offer} from '../types/offer';
 import {Review} from '../types/review';
-import {AuthorizationStatus, CITY} from '../const';
+import {AuthorizationStatus, CITY, BLANK_OFFER} from '../const';
 import {changeCity,
   getOffersByCity,
-  changeOffers,
+  changeOffersByCity,
   changeSelectedOffer,
+  changeOffers,
   loadOffers,
   loadOffer,
   loadReveiws,
   requireAuthorization,
   setError,
   setDataLoadedStatus,
-  setIdOffer,
   loadOffersNearby,
   loadFavorites,
   setUserEmail,
   clearFavorites,
-  changeFavorites,
-  deleteFavorites
+  deleteFavorites,
+  addFavorite
 } from '../store/action';
 
 
@@ -30,7 +30,7 @@ type InitialState = {
   offersNearby: Offer[],
   id: string | undefined,
   offersByCity: Offer[],
-  offer: Offer | null,
+  offer: Offer,
   reviews: Review[],
   favorites: Offer[],
   isFavorite: boolean | undefined;
@@ -41,13 +41,14 @@ type InitialState = {
   isDataLoaded: boolean
 };
 
+
 const initialState: InitialState = {
   city: CITY[0],
   offers: [],
   offersNearby: [],
   offersByCity: [],
   selectedOffer: null,
-  offer: null,
+  offer: BLANK_OFFER,
   email: '',
   reviews: [],
   favorites: [],
@@ -67,17 +68,18 @@ const reducer = createReducer(initialState, (builder) => {
     .addCase(getOffersByCity, (state, action) => {
       state.offersByCity = state.offers.filter((offer)=>offer.city.name === action.payload.name);
     })
-    .addCase(changeOffers, (state, action) => {
+    .addCase(changeOffersByCity, (state, action) => {
       state.offersByCity = action.payload;
     })
     .addCase(changeSelectedOffer, (state, action) => {
       state.selectedOffer = action.payload;
     })
-    .addCase(setIdOffer, (state, action) => {
-      state.id = action.payload;
-    })
     .addCase(setUserEmail, (state, action) => {
       state.email = action.payload;
+    })
+    .addCase(changeOffers, (state, action) => {
+      const id = state.offers.findIndex((offer)=> offer.id === action.payload.id);
+      state.offers = [...state.offers.slice(0,id), action.payload, ...state.offers.slice(id + 1)];
     })
     .addCase(loadOffers, (state, action) => {
       state.offers = action.payload;
@@ -95,12 +97,13 @@ const reducer = createReducer(initialState, (builder) => {
       state.favorites = state.favorites.filter((favorite) =>favorite.id !== id) ;
       state.favoriteCount = state.favorites.length;
     })
+    .addCase(addFavorite, (state, action) => {
+      state.favorites = state.favorites.concat(action.payload);
+      state.favoriteCount = state.favorites.length;
+    })
     .addCase(clearFavorites, (state) => {
       state.favorites = [];
       state.favoriteCount = 0;
-    })
-    .addCase(changeFavorites, (state, action) => {
-      state.isFavorite = action.payload;
     })
     .addCase(loadOffersNearby, (state, action) => {
       state.offersNearby = action.payload;

@@ -2,44 +2,41 @@ import {createAction} from '@reduxjs/toolkit';
 import {Offer} from '../types/offer';
 import {Review} from '../types/review';
 import {AuthorizationStatus, AppRoute} from '../const';
+import {City} from '../types/map';
 
-export const changeCity = createAction('main/changeCity', (cityName) => ({
-  payload: cityName,
-}) );
+export const changeCity = createAction<City>('main/changeCity');
 
-export const getOffersByCity = createAction('main/getOffersByCity', (cityName) => ({
-  payload: cityName,
-}));
+export const getOffersByCity = createAction<City>('main/getOffersByCity');
 
-export const changeOffers = createAction('main/changeOffers', (newOffers) => ({
-  payload: newOffers,
-}));
+export const changeOffersByCity = createAction<Offer[]>('main/changeOffersByCity');
 
-export const changeSelectedOffer = createAction('main/changeSelectedOffer', (newOffer) => ({
-  payload: newOffer,
-}));
+export const changeSelectedOffer = createAction<Offer>('main/changeSelectedOffer');
 
-export const getFavoriteCount = createAction('property/getFavoriteCount');
 
 export const loadOffers = createAction<Offer[]>('data/loadOffers');
 
+export const changeOffers = createAction<Offer>('main/changeOffers1');
+
 export const loadOffer = createAction<Offer>('data/loadOffer');
+
 
 export const loadOffersNearby = createAction<Offer[]>('data/loadOffersNearby');
 
 export const loadReveiws = createAction<Review[]>('data/loadReveiws');
 
-export const loadFavorites = createAction<Offer[]>('data/loadFavorites');
 
-export const clearFavorites = createAction('data/clearFavorites');
+export const addFavorite = createAction<Offer>('favorite/addFavorite');
 
-export const deleteFavorites = createAction<string>('main/deleteFavorites');
+export const getFavoriteCount = createAction<number>('favorite/getFavoriteCount');
 
-export const changeFavorites = createAction<boolean | undefined>('main/changeFavorites');
+export const loadFavorites = createAction<Offer[]>('favorite/loadFavorites');
 
-export const setIdOffer = createAction<string | undefined>('property/setIdOffer');
+export const clearFavorites = createAction('favorite/clearFavorites');
 
-export const setUserEmail = createAction<string>('login/setUserEmail');
+export const deleteFavorites = createAction<string>('favorite/deleteFavorites');
+
+
+export const setUserEmail = createAction<string>('user/setUserEmail');
 
 export const requireAuthorization = createAction<AuthorizationStatus>('user/requireAuthorization');
 

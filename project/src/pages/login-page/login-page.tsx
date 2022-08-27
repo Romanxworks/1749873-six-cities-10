@@ -40,8 +40,10 @@ function LoginPage(): JSX.Element {
 
   const handleCityClick = (evt:SyntheticEvent<HTMLElement>) => {
     const getRandomCity = CITY.find((city) => city.name === evt.currentTarget.innerText);
-    dispatch(changeCity(getRandomCity));
-    dispatch(getOffersByCity(getRandomCity));
+    if(getRandomCity){
+      dispatch(changeCity(getRandomCity));
+      dispatch(getOffersByCity(getRandomCity));
+    }
   };
 
   return (

@@ -3,14 +3,14 @@ import {Link, useLocation} from 'react-router-dom';
 import {AppRoute, CITY} from '../../const';
 import {useAppDispatch} from '../../hooks';
 import {changeCity, getOffersByCity} from '../../store/action';
-import {fetchOffersAction} from '../../store/api-actions';
+// import {fetchOffersAction} from '../../store/api-actions';
 
 function Header ():JSX.Element{
   const location = useLocation();
   const isLoginPage = location.pathname === AppRoute.Login;
   const dispatch = useAppDispatch();
   const handleClickMain = () => {
-    dispatch(fetchOffersAction());
+    // dispatch(fetchOffersAction());
     dispatch(changeCity(CITY[0]));
     dispatch(getOffersByCity(CITY[0]));
   };
