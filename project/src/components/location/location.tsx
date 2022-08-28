@@ -1,15 +1,13 @@
 import {Link} from 'react-router-dom';
 import {CITY} from '../../const';
 import {City} from '../../types/map';
-import {useAppDispatch} from '../../hooks';
+import {useAppDispatch, useAppSelector} from '../../hooks';
 import {changeCity, getOffersByCity} from '../../store/action';
+import {memo} from 'react';
 
-type LocationProps = {
-  selectedCity: City,
-}
-
-function Location ({selectedCity}:LocationProps): JSX.Element{
+function Location (): JSX.Element{
   const dispatch = useAppDispatch();
+  const selectedCity = useAppSelector((state) => state.city);
 
   const onClickCity = (city:City) => {
     dispatch(changeCity(city));
@@ -32,4 +30,4 @@ function Location ({selectedCity}:LocationProps): JSX.Element{
   );
 }
 
-export default Location;
+export default memo(Location);

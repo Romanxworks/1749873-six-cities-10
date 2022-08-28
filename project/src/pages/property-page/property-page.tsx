@@ -10,7 +10,7 @@ import PropertyGallery from '../../components/property-gallery/property-gallery'
 import PropertyInsideList from '../../components/property-inside-list/property-inside-list';
 import PropertyHostUser from '../../components/property-host-user/property-host-user';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {redirectToRoute, changeSelectedOffer} from '../../store/action';
+import {redirectToRoute} from '../../store/action';
 import {
   fetchOfferAction,
   fetchOffersNearbyAction,
@@ -35,7 +35,6 @@ function PropertyPage():JSX.Element {
   const reviews = useAppSelector((state) => (state.reviews));
   const {images, isPremium, price, rating, title, type, bedrooms, maxAdults, goods, host, description, isFavorite} = offerById;
 
-  dispatch(changeSelectedOffer(offerById));////////
   const [isFavoriteState, setFavoriteState] = useState(isFavorite);
 
   const handleClickFavorite = () => {
@@ -115,14 +114,14 @@ function PropertyPage():JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            <Map containerHeigth = {600} isMain ={false} />
+            <Map containerHeigth = {600} selectedOffer = {offerById} isMain ={false} />
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {restOffers.map((offer) => (<CitiesCard offer = {offer} key = {offer.id} />))}
+              {restOffers.map((offer) => (<CitiesCard offer = {offer} onClick = {()=>null} key = {offer.id} />))}
             </div>
           </section>
         </div>

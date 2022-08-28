@@ -1,3 +1,5 @@
+import {memo} from 'react';
+
 function PremiumFlag ():JSX.Element{
   return(
     <div className="place-card__mark">
@@ -6,4 +8,4 @@ function PremiumFlag ():JSX.Element{
   );
 }
 
-export default PremiumFlag;
+export default memo(PremiumFlag);

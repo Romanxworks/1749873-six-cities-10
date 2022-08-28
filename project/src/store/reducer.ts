@@ -3,10 +3,10 @@ import {City} from '../types/map';
 import {Offer} from '../types/offer';
 import {Review} from '../types/review';
 import {AuthorizationStatus, CITY, BLANK_OFFER} from '../const';
-import {changeCity,
+import {
+  changeCity,
   getOffersByCity,
   changeOffersByCity,
-  changeSelectedOffer,
   changeOffers,
   loadOffers,
   loadOffer,
@@ -28,13 +28,10 @@ type InitialState = {
   offers: Offer[],
   email: string,
   offersNearby: Offer[],
-  id: string | undefined,
   offersByCity: Offer[],
   offer: Offer,
   reviews: Review[],
   favorites: Offer[],
-  isFavorite: boolean | undefined;
-  selectedOffer: Offer | null,
   favoriteCount: number,
   authorizationStatus: AuthorizationStatus,
   error: string | null,
@@ -47,13 +44,10 @@ const initialState: InitialState = {
   offers: [],
   offersNearby: [],
   offersByCity: [],
-  selectedOffer: null,
   offer: BLANK_OFFER,
   email: '',
   reviews: [],
   favorites: [],
-  isFavorite: false,
-  id: '',
   favoriteCount: 0,
   authorizationStatus: AuthorizationStatus.Unknown,
   error: null,
@@ -70,9 +64,6 @@ const reducer = createReducer(initialState, (builder) => {
     })
     .addCase(changeOffersByCity, (state, action) => {
       state.offersByCity = action.payload;
-    })
-    .addCase(changeSelectedOffer, (state, action) => {
-      state.selectedOffer = action.payload;
     })
     .addCase(setUserEmail, (state, action) => {
       state.email = action.payload;

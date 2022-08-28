@@ -3,17 +3,18 @@ import {Offer} from '../../types/offer';
 import {Link} from 'react-router-dom';
 import {RATING_ADAPTER, AuthorizationStatus, AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {useState} from 'react';
-import {changeSelectedOffer, loadOffer, redirectToRoute} from '../../store/action';
+import {useState, memo} from 'react';
+import {loadOffer, redirectToRoute} from '../../store/action';
 import {
   fetchSetFavoriteAction,
 } from '../../store/api-actions';
 
 type CitiesCardProps = {
   offer: Offer;
+  onClick: (offer:Offer) => void | null
 };
 
-function CitiesCard({offer}:CitiesCardProps):JSX.Element{
+function CitiesCard({offer, onClick}:CitiesCardProps):JSX.Element{
   const {previewImage, isPremium, price, rating, title, type, id, isFavorite} = offer;
 
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
@@ -21,12 +22,12 @@ function CitiesCard({offer}:CitiesCardProps):JSX.Element{
   const status = useAppSelector((state) => (state.authorizationStatus));
   const isLogin = status === AuthorizationStatus.Auth;
 
-  const handleCardActive = () => (dispatch(changeSelectedOffer(offer)));
+  const handleCardActive = () => (onClick(offer));
 
   const idForFetch = String(id);
   const handleClickFavorite = () => {
     if(isLogin){
-      const updatedIsFavorite = !isFavoriteStatus;
+      const updatedIsFavorite = !isFavorite;
       setFavoriteStatus(updatedIsFavorite);
       dispatch(fetchSetFavoriteAction({id:idForFetch,status:updatedIsFavorite}));
     }else{
@@ -77,4 +78,4 @@ function CitiesCard({offer}:CitiesCardProps):JSX.Element{
   );
 }
 
-export default CitiesCard;
+export default memo(CitiesCard);

@@ -1,4 +1,4 @@
-import {useState, SyntheticEvent} from 'react';
+import {useState, SyntheticEvent, memo} from 'react';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {changeOffersByCity, getOffersByCity} from '../../store/action';
 import {sortByPriceToLow, sortByPriceToHigh, sortByRating} from '../../utils';
@@ -54,4 +54,4 @@ function MainSort ():JSX.Element{
   );
 }
 
-export default MainSort;
+export default memo(MainSort);

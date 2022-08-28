@@ -10,12 +10,10 @@ export const getOffersByCity = createAction<City>('main/getOffersByCity');
 
 export const changeOffersByCity = createAction<Offer[]>('main/changeOffersByCity');
 
-export const changeSelectedOffer = createAction<Offer>('main/changeSelectedOffer');
-
 
 export const loadOffers = createAction<Offer[]>('data/loadOffers');
 
-export const changeOffers = createAction<Offer>('main/changeOffers1');
+export const changeOffers = createAction<Offer>('main/changeOffers');
 
 export const loadOffer = createAction<Offer>('data/loadOffer');
 
@@ -26,8 +24,6 @@ export const loadReveiws = createAction<Review[]>('data/loadReveiws');
 
 
 export const addFavorite = createAction<Offer>('favorite/addFavorite');
-
-export const getFavoriteCount = createAction<number>('favorite/getFavoriteCount');
 
 export const loadFavorites = createAction<Offer[]>('favorite/loadFavorites');
 

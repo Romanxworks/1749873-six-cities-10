@@ -4,10 +4,12 @@ import 'leaflet/dist/leaflet.css';
 import useMap from '../../hooks/useMap';
 import {useAppSelector} from '../../hooks';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
+import {Offer} from '../../types/offer';
 
 type MapProps = {
   containerHeigth: number;
   isMain: boolean;
+  selectedOffer: Offer | undefined
 };
 
 const defaultCustomIcon = new Icon({
@@ -22,12 +24,11 @@ const currentCustomIcon = new Icon({
   iconAnchor: [20, 40]
 });
 
-function Map({containerHeigth, isMain}:MapProps):JSX.Element{
+function Map({containerHeigth, isMain, selectedOffer}:MapProps):JSX.Element{
   const mapRef = useRef(null);
   const city = useAppSelector((state) => state.city);
   const offers = useAppSelector((state) => (state.offersByCity));
   const offersNearby = useAppSelector((state) => (state.offersNearby));
-  const selectedOffer = useAppSelector((state) => (state.selectedOffer));
   const map = useMap(mapRef, city);
 
   useEffect(() => {
