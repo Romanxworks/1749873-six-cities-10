@@ -1,7 +1,7 @@
 import {useState, ChangeEvent, FormEvent, useRef} from 'react';
 import {CommentData} from '../../types/user';
 import {useAppDispatch} from '../../hooks';
-import {commentAction, fetchReviewsAction} from '../../store/api-actions';
+import {postReviewAction, fetchReviewsAction} from '../../store/api-actions';
 import {MAX_REVIEW_LENGTH, MIN_REVIEW_LENGTH} from '../../const';
 type ReviewFormProps = {
   id: string
@@ -30,7 +30,7 @@ function ReviewsForm({id}:ReviewFormProps):JSX.Element{
     }
   };
   const onSubmit = (commentData: CommentData) => {
-    dispatch(commentAction(commentData));
+    dispatch(postReviewAction(commentData));
     dispatch(fetchReviewsAction(id));
     setRating(0);
   };

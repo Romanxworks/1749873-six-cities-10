@@ -5,6 +5,8 @@ import useMap from '../../hooks/useMap';
 import {useAppSelector} from '../../hooks';
 import {URL_MARKER_DEFAULT, URL_MARKER_CURRENT} from '../../const';
 import {Offer} from '../../types/offer';
+import { getCity } from '../../store/main-process/selectors';
+import { getOffers, getOffersNearby } from '../../store/offers-data/selectors';
 
 type MapProps = {
   containerHeigth: number;
@@ -26,9 +28,9 @@ const currentCustomIcon = new Icon({
 
 function Map({containerHeigth, isMain, selectedOffer}:MapProps):JSX.Element{
   const mapRef = useRef(null);
-  const city = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => (state.offersByCity));
-  const offersNearby = useAppSelector((state) => (state.offersNearby));
+  const city = useAppSelector(getCity);
+  const offers = useAppSelector(getOffers);
+  const offersNearby = useAppSelector(getOffersNearby);
   const map = useMap(mapRef, city);
 
   useEffect(() => {

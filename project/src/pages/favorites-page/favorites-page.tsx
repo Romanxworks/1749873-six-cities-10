@@ -3,11 +3,12 @@ import {Link} from 'react-router-dom';
 import {useAppSelector} from '../../hooks';
 import FavoriteItem from '../../components/favorite-item/favorite-item';
 import FavoritesEmptyPage from '../favorites-empty-page/favorites-empty-page';
-import {CITY, AppRoute} from '../../const';
+import {CITIES, AppRoute} from '../../const';
+import { getFavoriteCount, getFavorites } from '../../store/offers-data/selectors';
 
 function FavoritesPage():JSX.Element{
-  const favoriteCount = useAppSelector((state) => (state.favoriteCount));
-  const favorites = useAppSelector((state) => (state.favorites));
+  const favoriteCount = useAppSelector(getFavoriteCount);
+  const favorites = useAppSelector(getFavorites);
 
   if(favoriteCount === 0){
     return <FavoritesEmptyPage />;
@@ -20,7 +21,7 @@ function FavoritesPage():JSX.Element{
           <section className="favorites">
             <h1 className="favorites__title">Saved listing</h1>
             <ul className="favorites__list">
-              {CITY.map((city) => {
+              {CITIES.map((city) => {
                 const favoriteByCity = favorites.filter((favorite) =>favorite.city.name === city.name);
                 if(favoriteByCity.length !== 0){
                   return (<FavoriteItem city = {city} favorites = {favoriteByCity} key = {city.name}/>);

@@ -2,8 +2,9 @@ import {Link} from 'react-router-dom';
 import {Offer} from '../../types/offer';
 import {RATING_ADAPTER} from '../../const';
 import PremiumFlag from '../premium-flag/premium-flag';
-import {fetchSetFavoriteAction} from '../../store/api-actions';
+import {fetchOffersNearbyAction, fetchSetFavoriteAction} from '../../store/api-actions';
 import {useAppDispatch} from '../../hooks';
+import {changeOffer} from '../../store/offers-data/offers-data';
 
 type FavoriteCardProps ={
  offer: Offer
@@ -16,12 +17,19 @@ function FavoriteCard ({offer}:FavoriteCardProps):JSX.Element{
   const handleClickFavorite = () => {
     dispatch(fetchSetFavoriteAction({id:idForFetch, status:false}));
   };
+  const handleClickLink = () => {
+    dispatch(changeOffer(offer));
+    dispatch(fetchOffersNearbyAction(idForFetch));
+    window.scrollTo({
+      top: 0
+    });
+  };
 
   return(
     <article className="favorites__card place-card">
       {isPremium ? <PremiumFlag /> : null}
       <div className="favorites__image-wrapper place-card__image-wrapper">
-        <Link to={`/offer/${id}`}>
+        <Link to={`/offer/${id}`} onClick = {handleClickLink}>
           <img className="place-card__image" src={previewImage} width="150" height="110" alt="Place"/>
         </Link>
       </div>
@@ -45,7 +53,7 @@ function FavoriteCard ({offer}:FavoriteCardProps):JSX.Element{
           </div>
         </div>
         <h2 className="place-card__name">
-          <Link to={`/offer/${id}`}>{title}</Link>
+          <Link to={`/offer/${id}`} onClick = {handleClickLink}>{title}</Link>
         </h2>
         <p className="place-card__type">{type}</p>
       </div>

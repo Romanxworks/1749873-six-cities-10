@@ -22,6 +22,21 @@ export enum APIRoute {
     Logout = '/logout',
   }
 
+export enum NameSpace {
+    Data = 'DATA',
+    Main = 'MAIN',
+    User = 'USER',
+  }
+
+export enum NameCities {
+  Paris = 'Paris',
+  Dusseldorf = 'Dusseldorf',
+  Hamburg = 'Hamburg',
+  Cologne = 'Cologne',
+  Amsterdam = 'Amsterdam',
+  Brussels = 'Brussels',
+  }
+
 export const MAX_IMAGES_COUNT = 6;
 
 export const MAX_REVIEWS_COUNT = 10;
@@ -30,17 +45,13 @@ export const MAX_REVIEW_LENGTH = 300;
 
 export const MIN_REVIEW_LENGTH = 50;
 
-export const TIMEOUT_SHOW_ERROR = 2000;
-
 export const RATING_ADAPTER = 0.05;
-
-export const CITIES = ['Paris', 'Cologne', 'Brussels', 'Amsterdam', 'Hamburg', 'Dusseldorf'];
 
 export const URL_MARKER_DEFAULT = '../../img/pin.svg';
 
 export const URL_MARKER_CURRENT = '../../img/pin-active.svg';
 
-export const CITY :City[] = [
+export const CITIES :City[] = [
   {
     location: {
       latitude: 48.85661,

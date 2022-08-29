@@ -3,11 +3,12 @@ import {RATING_ADAPTER, MAX_REVIEWS_COUNT} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {useEffect} from 'react';
 import {fetchReviewsAction} from '../../store/api-actions';
+import {getReviews} from '../../store/offers-data/selectors';
 type ReviewOfferProps = {id:string}
 
 function ReviewOffer ({id}:ReviewOfferProps):JSX.Element{
   const dispatch = useAppDispatch();
-  const reviews = useAppSelector((state) => (state.reviews));
+  const reviews = useAppSelector(getReviews);
   useEffect(()=>{
     dispatch(fetchReviewsAction(id));
   },[id,dispatch]);

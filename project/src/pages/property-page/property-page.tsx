@@ -1,6 +1,6 @@
 import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
-import {useEffect, useState} from 'react';
+import {useState} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {AuthorizationStatus, RATING_ADAPTER, AppRoute} from '../../const';
 import ReviewOffer from '../../components/review/review';
@@ -12,27 +12,24 @@ import PropertyHostUser from '../../components/property-host-user/property-host-
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {redirectToRoute} from '../../store/action';
 import {
-  fetchOfferAction,
-  fetchOffersNearbyAction,
   fetchSetFavoriteAction,
 } from '../../store/api-actions';
+
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import { getOffer, getOffersNearby, getReviews } from '../../store/offers-data/selectors';
 
 function PropertyPage():JSX.Element {
   const params = useParams();
   const id = String(params.id);
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => (state.authorizationStatus));
+
+
+  const status = useAppSelector(getAuthorizationStatus);
   const isLogin = status === AuthorizationStatus.Auth;
 
-  useEffect(()=>{
-    dispatch(fetchOfferAction(id));
-    dispatch(fetchOffersNearbyAction(id));
-
-  },[id, dispatch]);
-
-  const offerById = useAppSelector((state) => (state.offer));
-  const restOffers = useAppSelector((state) => (state.offersNearby));
-  const reviews = useAppSelector((state) => (state.reviews));
+  const offerById = useAppSelector(getOffer);
+  const restOffers = useAppSelector(getOffersNearby);
+  const reviews = useAppSelector(getReviews);
   const {images, isPremium, price, rating, title, type, bedrooms, maxAdults, goods, host, description, isFavorite} = offerById;
 
   const [isFavoriteState, setFavoriteState] = useState(isFavorite);

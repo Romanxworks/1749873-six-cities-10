@@ -4,10 +4,13 @@ import {Link} from 'react-router-dom';
 import {RATING_ADAPTER, AuthorizationStatus, AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {useState, memo} from 'react';
-import {loadOffer, redirectToRoute} from '../../store/action';
+import {redirectToRoute} from '../../store/action';
 import {
   fetchSetFavoriteAction,
+  fetchOffersNearbyAction
 } from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import { changeOffer } from '../../store/offers-data/offers-data';
 
 type CitiesCardProps = {
   offer: Offer;
@@ -19,16 +22,17 @@ function CitiesCard({offer, onClick}:CitiesCardProps):JSX.Element{
 
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => (state.authorizationStatus));
+  const status = useAppSelector(getAuthorizationStatus);
   const isLogin = status === AuthorizationStatus.Auth;
 
   const handleCardActive = () => (onClick(offer));
 
   const idForFetch = String(id);
+
   const handleClickFavorite = () => {
     if(isLogin){
-      const updatedIsFavorite = !isFavorite;
-      setFavoriteStatus(updatedIsFavorite);
+      setFavoriteStatus(!isFavoriteStatus);
+      const updatedIsFavorite = !isFavoriteStatus;
       dispatch(fetchSetFavoriteAction({id:idForFetch,status:updatedIsFavorite}));
     }else{
       dispatch(redirectToRoute(AppRoute.Login));
@@ -36,7 +40,8 @@ function CitiesCard({offer, onClick}:CitiesCardProps):JSX.Element{
   };
 
   const handleClickLink = () => {
-    dispatch(loadOffer(offer));
+    dispatch(changeOffer(offer));
+    dispatch(fetchOffersNearbyAction(idForFetch));
     window.scrollTo({
       top: 0
     });
@@ -79,3 +84,5 @@ function CitiesCard({offer, onClick}:CitiesCardProps):JSX.Element{
 }
 
 export default memo(CitiesCard);
+
+

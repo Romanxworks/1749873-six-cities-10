@@ -2,14 +2,16 @@ import {Link} from 'react-router-dom';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {AppRoute} from '../../const';
 import {fetchFavoriteAction} from '../../store/api-actions';
+import {getFavoriteCount} from '../../store/offers-data/selectors';
+import {getUserEmail} from '../../store/user-process/selectors';
 
 function UserInfo():JSX.Element{
   const dispatch = useAppDispatch();
   const handleClick = () => {
     dispatch(fetchFavoriteAction());
   };
-  const favoriteCount = useAppSelector((state) => (state.favoriteCount));
-  const email = useAppSelector((state) => (state.email));
+  const favoriteCount = useAppSelector(getFavoriteCount);
+  const email = useAppSelector(getUserEmail);
 
   return (
     <li className="header__nav-item user">

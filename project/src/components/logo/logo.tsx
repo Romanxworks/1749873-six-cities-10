@@ -1,14 +1,13 @@
 import {Link} from 'react-router-dom';
-import {AppRoute, CITY} from '../../const';
+import {AppRoute, CITIES} from '../../const';
 import {useAppDispatch} from '../../hooks';
-import {changeCity, getOffersByCity} from '../../store/action';
+import {changeCity} from '../../store/main-process/main-process';
 import {memo} from 'react';
 
 function Logo ():JSX.Element {
   const dispatch = useAppDispatch();
   const handleClickMain = () => {
-    dispatch(changeCity(CITY[0]));
-    dispatch(getOffersByCity(CITY[0]));
+    dispatch(changeCity(CITIES[0]));
   };
   return (
     <div className="header__left">
