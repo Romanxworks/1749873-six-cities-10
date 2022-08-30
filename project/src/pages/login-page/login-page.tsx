@@ -17,6 +17,7 @@ function LoginPage(): JSX.Element {
   const authStatus = useAppSelector(getAuthorizationStatus);
   const randomCityName = CITIES[getRandomInteger(0,(CITIES.length - 1))];
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     if(authStatus === AuthorizationStatus.Auth){
       dispatch(redirectToRoute(AppRoute.Main));
@@ -44,7 +45,6 @@ function LoginPage(): JSX.Element {
     const getRandomCity = CITIES.find((city) => city.name === evt.currentTarget.innerText);
     if(getRandomCity){
       dispatch(changeCity(getRandomCity));
-      // dispatch(getOffersByCity(getRandomCity));
     }
   };
 

@@ -5,17 +5,23 @@ import Map from '../../components/map/map';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import MainEmpty from '../../components/main-empty/main-empty';
 import MainSort from '../../components/main-sort/main-sort';
-import {useCallback, useState} from 'react';
+import {useCallback, useEffect, useState} from 'react';
 import {Offer} from '../../types/offer';
 import {getCity, getOffersByCity, getOffersByCityName} from '../../store/main-process/selectors';
-import {changeOffersByCity} from '../../store/main-process/main-process';
+import { changeOffersByCity } from '../../store/main-process/main-process';
+
 
 function MainPage():JSX.Element{
-  // const dispatch = useAppDispatch();
+
   const city = useAppSelector(getCity);
-  // const offers = useAppSelector(getOffersByCityName);
-  // dispatch(changeOffersByCity(offers));
+  const offers = useAppSelector(getOffersByCityName);
+  const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(changeOffersByCity(offers));
+  }, [city, dispatch, offers]);
+
   const offersByCity = useAppSelector(getOffersByCity);
+
   const [selectedOffer, setSelectedOffer] = useState<Offer>();
   const isOffers = offersByCity.length === 0;
 

@@ -1,15 +1,8 @@
 import {useState, SyntheticEvent, memo} from 'react';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {changeOffersByCity} from '../../store/main-process/main-process';
-import { getOffersByCityName } from '../../store/main-process/selectors';
-// import {getCity} from '../../store/main-process/selectors';
-// import { Offer } from '../../types/offer';
-// import { getOffers } from '../../store/offers-data/selectors';
+import {getOffersByCityName} from '../../store/main-process/selectors';
 import {sortByPriceToLow, sortByPriceToHigh, sortByRating} from '../../utils';
-
-// type MainSortProps = {
-//   offers: Offer[]
-// }
 
 function MainSort ():JSX.Element{
   const dispatch = useAppDispatch();
