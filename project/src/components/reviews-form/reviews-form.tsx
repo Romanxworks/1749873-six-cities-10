@@ -1,16 +1,17 @@
 import {useState, ChangeEvent, FormEvent, useRef} from 'react';
 import {CommentData} from '../../types/user';
 import {useAppDispatch} from '../../hooks';
-import {commentAction, fetchReviewsAction} from '../../store/api-actions';
-
+import {postReviewAction, fetchReviewsAction} from '../../store/api-actions';
+import {MAX_REVIEW_LENGTH, MIN_REVIEW_LENGTH} from '../../const';
 type ReviewFormProps = {
   id: string
 }
 
 function ReviewsForm({id}:ReviewFormProps):JSX.Element{
-  const [rating, setRating] = useState<number>(1);
+  const [rating, setRating] = useState<number>(0);
   const [isChecked, setChecked] = useState(false);
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
+  const submitRef = useRef<HTMLButtonElement | null>(null);
   const dispatch = useAppDispatch();
 
   const radioChangeHandle = ({target}: ChangeEvent<HTMLInputElement>) => {
@@ -19,10 +20,19 @@ function ReviewsForm({id}:ReviewFormProps):JSX.Element{
     const checked = target.checked;
     setChecked(checked);
   };
-
+  const handleChangeDisabled = () => {
+    if(commentRef.current !== null){
+      if(commentRef.current.value.length >= MIN_REVIEW_LENGTH && commentRef.current.value.length < MAX_REVIEW_LENGTH){
+        submitRef.current?.removeAttribute('disabled');
+      }else{
+        submitRef.current?.setAttribute('disabled', 'disabled');
+      }
+    }
+  };
   const onSubmit = (commentData: CommentData) => {
-    dispatch(commentAction(commentData));
+    dispatch(postReviewAction(commentData));
     dispatch(fetchReviewsAction(id));
+    setRating(0);
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -31,7 +41,6 @@ function ReviewsForm({id}:ReviewFormProps):JSX.Element{
     if (rating !== null && commentRef.current !== null) {
       onSubmit({id, rating, comment: commentRef.current.value });
       commentRef.current.value = '';
-      setChecked(false);
     }
   };
   return (
@@ -73,12 +82,16 @@ function ReviewsForm({id}:ReviewFormProps):JSX.Element{
           </svg>
         </label>
       </div>
-      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" ref = {commentRef}></textarea>
+      <textarea className="reviews__textarea form__textarea" id="review" name="review" placeholder="Tell how was your stay, what you like and what can be improved" ref = {commentRef}
+        onChange = {handleChangeDisabled} maxLength = {MAX_REVIEW_LENGTH}
+      >
+      </textarea>
       <div className="reviews__button-wrapper">
         <p className="reviews__help">
                       To submit review please make sure to set <span className="reviews__star">rating</span> and describe your stay with at least <b className="reviews__text-amount">50 characters</b>.
         </p>
-        <button className="reviews__submit form__submit button" type="submit">Submit</button>
+        <button className="reviews__submit form__submit button" type="submit" ref = {submitRef} disabled>Submit
+        </button>
       </div>
     </form>
   );

@@ -1,33 +1,48 @@
 import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
-import {useEffect} from 'react';
+import {useState} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
-import {AuthorizationStatus, RATING_ADAPTER} from '../../const';
+import {AuthorizationStatus, RATING_ADAPTER, AppRoute} from '../../const';
 import ReviewOffer from '../../components/review/review';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
+import PropertyGallery from '../../components/property-gallery/property-gallery';
+import PropertyInsideList from '../../components/property-inside-list/property-inside-list';
+import PropertyHostUser from '../../components/property-host-user/property-host-user';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {setFavoriteOffer} from '../../store/action';
-import {fetchOfferAction, fetchOffersNearbyAction, fetchReviewsAction} from '../../store/api-actions';
+import {redirectToRoute} from '../../store/action';
+import {
+  fetchSetFavoriteAction,
+} from '../../store/api-actions';
+
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import { getOffer, getOffersNearby, getReviews } from '../../store/offers-data/selectors';
 
 function PropertyPage():JSX.Element {
   const params = useParams();
   const id = String(params.id);
   const dispatch = useAppDispatch();
-  const status = useAppSelector((state) => (state.authorizationStatus));
 
-  useEffect(()=>{
-    dispatch(fetchOfferAction(id));
-    dispatch(fetchOffersNearbyAction(id));
-    dispatch(fetchReviewsAction(id));
-  },[id, dispatch]);
 
-  const offerById = useAppSelector((state) => (state.offer));
-  const restOffers = useAppSelector((state) => (state.offersNearby));
-  const reviews = useAppSelector((state) => (state.reviews));
+  const status = useAppSelector(getAuthorizationStatus);
+  const isLogin = status === AuthorizationStatus.Auth;
+
+  const offerById = useAppSelector(getOffer);
+  const restOffers = useAppSelector(getOffersNearby);
+  const reviews = useAppSelector(getReviews);
+  const {images, isPremium, price, rating, title, type, bedrooms, maxAdults, goods, host, description, isFavorite} = offerById;
+
+  const [isFavoriteState, setFavoriteState] = useState(isFavorite);
+
   const handleClickFavorite = () => {
-    const updatedIsFavorite = !offerById?.isFavorite;
-    dispatch(setFavoriteOffer(updatedIsFavorite));
+    if(isLogin){
+      setFavoriteState(!isFavoriteState);
+      const favoriteStatus = !isFavorite;
+      dispatch(fetchSetFavoriteAction({id,status:favoriteStatus}));
+    }else{
+      dispatch(redirectToRoute(AppRoute.Login));
+    }
+
   };
   return(
     <div className="page">
@@ -35,27 +50,15 @@ function PropertyPage():JSX.Element {
 
       <main className="page__main page__main--property">
         <section className="property">
-          <div className="property__gallery-container container">
-            <div className="property__gallery">
-              {offerById?.images.slice(0,6).map((image, i) => {
-                const keyValue = `o-${image}-${i}`;
-                return(
-                  <div key={keyValue} className="property__image-wrapper">
-                    <img className="property__image" src = {image} alt = {offerById?.type}/>
-                  </div>
-                );
-              })}
-
-            </div>
-          </div>
+          <PropertyGallery images = {images} type = {type} />
           <div className="property__container container">
             <div className="property__wrapper">
-              {offerById?.isPremium && <div className="property__mark"><span>Premium</span></div>}
+              {isPremium && <div className="property__mark"><span>Premium</span></div>}
               <div className="property__name-wrapper">
                 <h1 className="property__name">
-                  {offerById?.title}
+                  {title}
                 </h1>
-                <button className={`property__bookmark-button ${offerById?.isFavorite && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
+                <button className={`property__bookmark-button ${isFavoriteState && 'property__bookmark-button--active'} button`} type="button" onClick = {handleClickFavorite}>
                   <svg className="property__bookmark-icon place-card__bookmark-icon" width="31" height="33">
                     <use xlinkHref="#icon-bookmark"></use>
                   </svg>
@@ -64,62 +67,43 @@ function PropertyPage():JSX.Element {
               </div>
               <div className="property__rating rating">
                 <div className="property__stars rating__stars">
-                  <span style={{width: `${offerById ? offerById.rating / RATING_ADAPTER : null}%`}}></span>
+                  <span style={{width: `${rating / RATING_ADAPTER}%`}}></span>
                   <span className="visually-hidden">Rating</span>
                 </div>
-                <span className="property__rating-value rating__value">{offerById?.rating}</span>
+                <span className="property__rating-value rating__value">{rating}</span>
               </div>
               <ul className="property__features">
                 <li className="property__feature property__feature--entire">
-                  {offerById?.type}
+                  {type}
                 </li>
                 <li className="property__feature property__feature--bedrooms">
-                  {offerById?.bedrooms} Bedrooms
+                  {bedrooms} Bedrooms
                 </li>
                 <li className="property__feature property__feature--adults">
-                 Max {offerById?.maxAdults} adults
+                 Max {maxAdults} adults
                 </li>
               </ul>
               <div className="property__price">
-                <b className="property__price-value">&euro;{offerById?.price}</b>
+                <b className="property__price-value">&euro;{price}</b>
                 <span className="property__price-text">&nbsp;night</span>
               </div>
               <div className="property__inside">
                 <h2 className="property__inside-title">What&apos;s inside</h2>
-                <ul className="property__inside-list">
-                  {offerById?.goods.map((good) => {
-                    const keyValue = `o-${good}`;
-                    return(
-
-                      <li key={keyValue} className="property__inside-item">
-                        {good}
-                      </li>
-                    );
-                  })}
-
-                </ul>
+                <PropertyInsideList goods = {goods}/>
               </div>
               <div className="property__host">
                 <h2 className="property__host-title">Meet the host</h2>
-                <div className="property__host-user user">
-                  <div className="property__avatar-wrapper property__avatar-wrapper--pro user__avatar-wrapper">
-                    <img className="property__avatar user__avatar" src = {offerById?.host.avatarUrl} width="74" height="74" alt="Host avatar"/>
-                  </div>
-                  <span className="property__user-name">
-                    {offerById?.host.name}
-                  </span>
-                  {offerById?.host.isPro && <span className="property__user-status">Pro</span>}
-                </div>
+                <PropertyHostUser host = {host}/>
                 <div className="property__description">
                   <p className="property__text">
-                    {offerById?.description}
+                    {description}
                   </p>
                 </div>
               </div>
               <section className="property__reviews reviews">
                 <h2 className="reviews__title">Reviews &middot; <span className="reviews__amount">{reviews.length}</span></h2>
 
-                <ReviewOffer id = {id}/>
+                <ReviewOffer id = {id} />
 
                 {status === AuthorizationStatus.Auth ? <ReviewsForm id = {id} /> : null}
 
@@ -127,14 +111,14 @@ function PropertyPage():JSX.Element {
             </div>
           </div>
           <section className="property__map map">
-            { offerById && <Map containerHeigth = {600} isMain ={false} />}
+            <Map containerHeigth = {600} selectedOffer = {offerById} isMain ={false} />
           </section>
         </section>
         <div className="container">
           <section className="near-places places">
             <h2 className="near-places__title">Other places in the neighbourhood</h2>
             <div className="near-places__list places__list">
-              {restOffers.map((offer) => (<CitiesCard offer = {offer} key = {offer.id} />))}
+              {restOffers.map((offer) => (<CitiesCard offer = {offer} onClick = {()=>null} key = {offer.id} />))}
             </div>
           </section>
         </div>

@@ -1,22 +1,18 @@
 import {sortByDate, getReviewDate} from '../../utils';
-import {RATING_ADAPTER} from '../../const';
+import {RATING_ADAPTER, MAX_REVIEWS_COUNT} from '../../const';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {useEffect} from 'react';
 import {fetchReviewsAction} from '../../store/api-actions';
-
-type ReviewOfferProps = {
-    id: string
-}
+import {getReviews} from '../../store/offers-data/selectors';
+type ReviewOfferProps = {id:string}
 
 function ReviewOffer ({id}:ReviewOfferProps):JSX.Element{
   const dispatch = useAppDispatch();
-
+  const reviews = useAppSelector(getReviews);
   useEffect(()=>{
     dispatch(fetchReviewsAction(id));
-  },[id, dispatch]);
-
-  const reviews = useAppSelector((state) => (state.reviews));
-  const sortReviews = reviews.slice().sort(sortByDate).slice(0, 10);
+  },[id,dispatch]);
+  const sortReviews = reviews.slice().sort(sortByDate).slice(0, MAX_REVIEWS_COUNT);
 
   return(
     <ul className="reviews__list">

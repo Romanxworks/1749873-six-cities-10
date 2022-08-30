@@ -1,27 +1,33 @@
 import {Link} from 'react-router-dom';
-import {useRef, FormEvent, SyntheticEvent} from 'react';
+import {useRef, FormEvent, SyntheticEvent, useEffect} from 'react';
 import Header from '../../components/header/header';
 import {useAppDispatch, useAppSelector} from '../../hooks';
-import {AppRoute, AuthorizationStatus} from '../../const';
-import {loginAction} from '../../store/api-actions';
+import {AppRoute, AuthorizationStatus, CITIES} from '../../const';
+import {loginAction, fetchFavoriteAction} from '../../store/api-actions';
 import {AuthData} from '../../types/user';
 import {getRandomInteger} from '../../utils';
-import {changeCity, redirectToRoute, getOffersByCity} from '../../store/action';
-import {CITY} from '../../mocks/city';
+import {changeCity} from '../../store/main-process/main-process';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {redirectToRoute} from '../../store/action';
+
 
 function LoginPage(): JSX.Element {
   const emailRef = useRef<HTMLInputElement | null>(null);
   const passwordRef = useRef<HTMLInputElement | null>(null);
-  const authStatus = useAppSelector((state) => (state.authorizationStatus));
-  const randomCityName = CITY[getRandomInteger(0,(CITY.length - 1))];
+  const authStatus = useAppSelector(getAuthorizationStatus);
+  const randomCityName = CITIES[getRandomInteger(0,(CITIES.length - 1))];
   const dispatch = useAppDispatch();
 
-  if(authStatus === AuthorizationStatus.Auth){
-    dispatch(redirectToRoute(AppRoute.Main));
-  }
+  useEffect(() => {
+    if(authStatus === AuthorizationStatus.Auth){
+      dispatch(redirectToRoute(AppRoute.Main));
+    }
+  },[dispatch,authStatus]);
+
 
   const onSubmit = (authData: AuthData) => {
     dispatch(loginAction(authData));
+    dispatch(fetchFavoriteAction());
   };
 
   const handleSubmit = (evt: FormEvent<HTMLFormElement>) => {
@@ -36,9 +42,10 @@ function LoginPage(): JSX.Element {
   };
 
   const handleCityClick = (evt:SyntheticEvent<HTMLElement>) => {
-    const getRandomCity = CITY.find((city) => city.name === evt.currentTarget.innerText);
-    dispatch(changeCity(getRandomCity));
-    dispatch(getOffersByCity(getRandomCity));
+    const getRandomCity = CITIES.find((city) => city.name === evt.currentTarget.innerText);
+    if(getRandomCity){
+      dispatch(changeCity(getRandomCity));
+    }
   };
 
   return (

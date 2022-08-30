@@ -7,3 +7,8 @@ export type Review = {
     comment: string;
     user: User
 };
+
+export type FavoriteData = {
+    id: string,
+    status: boolean
+  }

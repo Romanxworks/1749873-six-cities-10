@@ -1,19 +1,18 @@
 import HeaderNavigation from '../header-navigation/header-navigation';
-import {Link, useLocation} from 'react-router-dom';
+import {useLocation} from 'react-router-dom';
 import {AppRoute} from '../../const';
+import Logo from '../logo/logo';
+import {memo} from 'react';
 
 function Header ():JSX.Element{
   const location = useLocation();
   const isLoginPage = location.pathname === AppRoute.Login;
+
   return(
     <header className="header">
       <div className="container">
         <div className="header__wrapper">
-          <div className="header__left">
-            <Link className="header__logo-link header__logo-link--active" to="/">
-              <img className="header__logo" src="img/logo.svg" alt="6 cities logo" width="81" height="41"/>
-            </Link>
-          </div>
+          <Logo />
           {!isLoginPage && <HeaderNavigation />}
         </div>
       </div>
@@ -21,4 +20,4 @@ function Header ():JSX.Element{
   );
 }
 
-export default Header;
+export default memo(Header);

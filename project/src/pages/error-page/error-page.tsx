@@ -1,5 +1,6 @@
 import Header from '../../components/header/header';
 import {Link} from 'react-router-dom';
+import {AppRoute} from '../../const';
 
 function ErrorPage():JSX.Element{
   return(
@@ -12,7 +13,7 @@ function ErrorPage():JSX.Element{
             <section className="cities__no-places">
               <div className="cities__status-wrapper tabs__content">
                 <b className="cities__status">Page not found</b>
-                <Link className="cities__status-description" to="/"> Back to homepage </Link>
+                <Link className="cities__status-description" to={AppRoute.Main}> Back to homepage </Link>
               </div>
             </section>
             <div className="cities__right-section"></div>

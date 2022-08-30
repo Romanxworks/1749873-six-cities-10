@@ -1,3 +1,5 @@
+import {memo} from 'react';
+
 function LoadingPage(): JSX.Element {
   return (
     <div className="cities__status-wrapper tabs__content">
@@ -7,4 +9,4 @@ function LoadingPage(): JSX.Element {
   );
 }
 
-export default LoadingPage;
+export default memo(LoadingPage);

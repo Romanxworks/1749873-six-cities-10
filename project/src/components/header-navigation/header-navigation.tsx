@@ -3,9 +3,10 @@ import {Link} from 'react-router-dom';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {AuthorizationStatus, AppRoute} from '../../const';
 import {logoutAction} from '../../store/api-actions';
+import {getAuthorizationStatus} from '../../store/user-process/selectors';
 
 function HeaderNavigation ():JSX.Element{
-  const authorizationStatus = useAppSelector((state) => state.authorizationStatus);
+  const authorizationStatus = useAppSelector(getAuthorizationStatus);
   const isLogin = authorizationStatus === AuthorizationStatus.Auth;
   const dispatch = useAppDispatch();
 

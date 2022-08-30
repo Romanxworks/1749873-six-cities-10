@@ -1,15 +1,14 @@
-import {useState, SyntheticEvent} from 'react';
-import {useAppSelector, useAppDispatch} from '../../hooks';
-import {changeOffers, getOffersByCity} from '../../store/action';
+import {useState, SyntheticEvent, memo} from 'react';
+import {useAppDispatch, useAppSelector} from '../../hooks';
+import {changeOffersByCity} from '../../store/main-process/main-process';
+import {getOffersByCityName} from '../../store/main-process/selectors';
 import {sortByPriceToLow, sortByPriceToHigh, sortByRating} from '../../utils';
 
 function MainSort ():JSX.Element{
   const dispatch = useAppDispatch();
   const [sortState, setSortState] = useState(false);
   const [sortName, setSortName] = useState('Popular');
-
-  const city = useAppSelector((state) => state.city);
-  const offers = useAppSelector((state) => (state.offersByCity));
+  const offers = useAppSelector(getOffersByCityName);
   const sortOffers = offers.slice();
 
   const getSotrName = ({currentTarget}:SyntheticEvent<HTMLElement>) => {
@@ -19,18 +18,18 @@ function MainSort ():JSX.Element{
     switch (currentTarget.dataset.sort) {
       case 'PriceLow':
         sortOffers.sort(sortByPriceToLow);
-        dispatch(changeOffers(sortOffers));
+        dispatch(changeOffersByCity(sortOffers));
         break;
       case 'PriceHigh':
         sortOffers.sort(sortByPriceToHigh);
-        dispatch(changeOffers(sortOffers));
+        dispatch(changeOffersByCity(sortOffers));
         break;
       case 'Rated':
         sortOffers.sort(sortByRating);
-        dispatch(changeOffers(sortOffers));
+        dispatch(changeOffersByCity(sortOffers));
         break;
       case 'Popular':
-        dispatch(getOffersByCity(city));
+        dispatch(changeOffersByCity(offers));
         break;
     }
   };
@@ -54,4 +53,4 @@ function MainSort ():JSX.Element{
   );
 }
 
-export default MainSort;
+export default memo(MainSort);
