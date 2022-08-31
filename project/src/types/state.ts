@@ -11,6 +11,7 @@ export type AppDispatch = typeof store.dispatch;
 export type UserProcess = {
     authorizationStatus: AuthorizationStatus,
     email: string
+    isLogin: boolean,
 };
 
 export type OffersData = {

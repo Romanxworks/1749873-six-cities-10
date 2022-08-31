@@ -8,17 +8,22 @@ import MainSort from '../../components/main-sort/main-sort';
 import {useCallback, useEffect, useState} from 'react';
 import {Offer} from '../../types/offer';
 import {getCity, getOffersByCity, getOffersByCityName} from '../../store/main-process/selectors';
-import { changeOffersByCity } from '../../store/main-process/main-process';
+import {changeOffersByCity} from '../../store/main-process/main-process';
+import {getIsLogin} from '../../store/user-process/selectors';
+import { getIsDataLoaded } from '../../store/offers-data/selectors';
+import LoadingPage from '../loading-page/loading-page';
 
 
 function MainPage():JSX.Element{
 
   const city = useAppSelector(getCity);
+  const isLogin = useAppSelector(getIsLogin);
   const offers = useAppSelector(getOffersByCityName);
   const dispatch = useAppDispatch();
+
   useEffect(() => {
     dispatch(changeOffersByCity(offers));
-  }, [city, dispatch, offers]);
+  }, [city, dispatch, offers, isLogin]);
 
   const offersByCity = useAppSelector(getOffersByCity);
 
@@ -28,7 +33,13 @@ function MainPage():JSX.Element{
   const onClickCity = useCallback((offer:Offer) => {
     setSelectedOffer(offer);
   },[]);
+  const isDataLoaded = useAppSelector(getIsDataLoaded);
 
+  if (isDataLoaded) {
+    return (
+      <LoadingPage />
+    );
+  }
   return (
     <div className="page page--gray page--main">
       <Header />

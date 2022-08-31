@@ -1,16 +1,13 @@
 import PremiumFlag from '../premium-flag/premium-flag';
 import {Offer} from '../../types/offer';
 import {Link} from 'react-router-dom';
-import {RATING_ADAPTER, AuthorizationStatus, AppRoute} from '../../const';
+import {RATING_ADAPTER, AppRoute} from '../../const';
 import {useAppDispatch, useAppSelector} from '../../hooks';
 import {useState, memo} from 'react';
 import {redirectToRoute} from '../../store/action';
-import {
-  fetchSetFavoriteAction,
-  fetchOffersNearbyAction
-} from '../../store/api-actions';
-import {getAuthorizationStatus} from '../../store/user-process/selectors';
-import { changeOffer } from '../../store/offers-data/offers-data';
+import {fetchSetFavoriteAction} from '../../store/api-actions';
+import {getIsLogin} from '../../store/user-process/selectors';
+import {changeOffer} from '../../store/offers-data/offers-data';
 
 type CitiesCardProps = {
   offer: Offer;
@@ -22,8 +19,7 @@ function CitiesCard({offer, onClick}:CitiesCardProps):JSX.Element{
 
   const [isFavoriteStatus, setFavoriteStatus] = useState(isFavorite);
   const dispatch = useAppDispatch();
-  const status = useAppSelector(getAuthorizationStatus);
-  const isLogin = status === AuthorizationStatus.Auth;
+  const isLogin = useAppSelector(getIsLogin);
 
   const handleCardActive = () => (onClick(offer));
 
@@ -41,7 +37,6 @@ function CitiesCard({offer, onClick}:CitiesCardProps):JSX.Element{
 
   const handleClickLink = () => {
     dispatch(changeOffer(offer));
-    dispatch(fetchOffersNearbyAction(idForFetch));
     window.scrollTo({
       top: 0
     });
@@ -49,7 +44,7 @@ function CitiesCard({offer, onClick}:CitiesCardProps):JSX.Element{
 
   return(
     <article className="cities__card place-card" onMouseEnter = {handleCardActive}>
-      {isPremium ? <PremiumFlag /> : null}
+      {isPremium && <PremiumFlag />}
       <div className="cities__image-wrapper place-card__image-wrapper">
         <Link to={`/offer/${id}`} onClick = {handleClickLink} >
           <img className="place-card__image" src = {previewImage} width="260" height="200" alt="Place" />

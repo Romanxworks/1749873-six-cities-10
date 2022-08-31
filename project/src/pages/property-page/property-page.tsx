@@ -1,8 +1,8 @@
 import {useParams} from 'react-router-dom';
 import Header from '../../components/header/header';
-import {useState} from 'react';
+import {useEffect, useState} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
-import {AuthorizationStatus, RATING_ADAPTER, AppRoute} from '../../const';
+import {RATING_ADAPTER, AppRoute} from '../../const';
 import ReviewOffer from '../../components/review/review';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
@@ -11,22 +11,21 @@ import PropertyInsideList from '../../components/property-inside-list/property-i
 import PropertyHostUser from '../../components/property-host-user/property-host-user';
 import {useAppSelector, useAppDispatch} from '../../hooks';
 import {redirectToRoute} from '../../store/action';
-import {
-  fetchSetFavoriteAction,
-} from '../../store/api-actions';
-
-import {getAuthorizationStatus} from '../../store/user-process/selectors';
-import { getOffer, getOffersNearby, getReviews } from '../../store/offers-data/selectors';
+import {fetchOfferAction, fetchOffersNearbyAction, fetchSetFavoriteAction} from '../../store/api-actions';
+import {getIsLogin} from '../../store/user-process/selectors';
+import {getIsDataLoaded, getOffer, getOffersNearby, getReviews} from '../../store/offers-data/selectors';
+import LoadingPage from '../loading-page/loading-page';
 
 function PropertyPage():JSX.Element {
   const params = useParams();
   const id = String(params.id);
   const dispatch = useAppDispatch();
+  useEffect(() => {
+    dispatch(fetchOfferAction(id));
+    dispatch(fetchOffersNearbyAction(id));
+  }, [dispatch, id]);
 
-
-  const status = useAppSelector(getAuthorizationStatus);
-  const isLogin = status === AuthorizationStatus.Auth;
-
+  const isLogin = useAppSelector(getIsLogin);
   const offerById = useAppSelector(getOffer);
   const restOffers = useAppSelector(getOffersNearby);
   const reviews = useAppSelector(getReviews);
@@ -44,6 +43,13 @@ function PropertyPage():JSX.Element {
     }
 
   };
+  const isDataLoaded = useAppSelector(getIsDataLoaded);
+
+  if (isDataLoaded) {
+    return (
+      <LoadingPage />
+    );
+  }
   return(
     <div className="page">
       <Header />
@@ -105,7 +111,7 @@ function PropertyPage():JSX.Element {
 
                 <ReviewOffer id = {id} />
 
-                {status === AuthorizationStatus.Auth ? <ReviewsForm id = {id} /> : null}
+                {isLogin && <ReviewsForm id = {id} />}
 
               </section>
             </div>

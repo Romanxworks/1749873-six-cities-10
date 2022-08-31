@@ -1,13 +1,12 @@
 import UserInfo from '../user-info/user-info';
 import {Link} from 'react-router-dom';
 import {useAppSelector, useAppDispatch} from '../../hooks';
-import {AuthorizationStatus, AppRoute} from '../../const';
+import {AppRoute} from '../../const';
 import {logoutAction} from '../../store/api-actions';
-import {getAuthorizationStatus} from '../../store/user-process/selectors';
+import {getIsLogin} from '../../store/user-process/selectors';
 
 function HeaderNavigation ():JSX.Element{
-  const authorizationStatus = useAppSelector(getAuthorizationStatus);
-  const isLogin = authorizationStatus === AuthorizationStatus.Auth;
+  const isLogin = useAppSelector(getIsLogin);
   const dispatch = useAppDispatch();
 
   const handleClick = () => {

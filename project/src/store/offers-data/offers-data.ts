@@ -31,12 +31,18 @@ export const offersData = createSlice({
   reducers: {
     changeOffer: (state, action) => {
       state.offer = action.payload;
+      const id = state.offers.findIndex((offer)=> offer.id === action.payload.id);
+      state.offers = [...state.offers.slice(0,id), action.payload, ...state.offers.slice(id + 1)];
     }
   },
   extraReducers(builder) {
     builder
       .addCase(fetchOffersAction.pending, (state) => {
         state.isDataLoaded = true;
+      })
+      .addCase(fetchOffersAction.rejected, (state,action) => {
+        state.isDataLoaded = false;
+        redirectToRoute(AppRoute.Error);
       })
       .addCase(fetchOffersAction.fulfilled, (state,action) => {
         state.offers = action.payload;
@@ -70,7 +76,7 @@ export const offersData = createSlice({
         state.isReviewSubmit = true;
       })
       .addCase(postReviewAction.rejected, (state) => {
-        state.isReviewSubmit = true;
+        state.isReviewSubmit = false;
       })
       .addCase(fetchFavoriteAction.fulfilled, (state,action) => {
         state.favorites = action.payload;

@@ -2,7 +2,7 @@ import {Link} from 'react-router-dom';
 import {Offer} from '../../types/offer';
 import {RATING_ADAPTER} from '../../const';
 import PremiumFlag from '../premium-flag/premium-flag';
-import {fetchOffersNearbyAction, fetchSetFavoriteAction} from '../../store/api-actions';
+import {fetchSetFavoriteAction} from '../../store/api-actions';
 import {useAppDispatch} from '../../hooks';
 import {changeOffer} from '../../store/offers-data/offers-data';
 
@@ -19,7 +19,6 @@ function FavoriteCard ({offer}:FavoriteCardProps):JSX.Element{
   };
   const handleClickLink = () => {
     dispatch(changeOffer(offer));
-    dispatch(fetchOffersNearbyAction(idForFetch));
     window.scrollTo({
       top: 0
     });

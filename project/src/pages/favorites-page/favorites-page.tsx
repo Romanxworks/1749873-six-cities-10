@@ -4,7 +4,7 @@ import {useAppSelector} from '../../hooks';
 import FavoriteItem from '../../components/favorite-item/favorite-item';
 import FavoritesEmptyPage from '../favorites-empty-page/favorites-empty-page';
 import {CITIES, AppRoute} from '../../const';
-import { getFavoriteCount, getFavorites } from '../../store/offers-data/selectors';
+import {getFavoriteCount, getFavorites} from '../../store/offers-data/selectors';
 
 function FavoritesPage():JSX.Element{
   const favoriteCount = useAppSelector(getFavoriteCount);
