@@ -63,6 +63,7 @@ function LoginPage(): JSX.Element {
                   placeholder="Email"
                   required
                   ref={emailRef}
+                  pattern="^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$"
                 />
               </div>
               <div className="login__input-wrapper form__input-wrapper">
@@ -73,6 +74,7 @@ function LoginPage(): JSX.Element {
                   placeholder="Password"
                   required
                   ref={passwordRef}
+                  pattern="^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d]{2,}$"
                 />
               </div>
               <button className="login__submit form__submit button" type="submit">Sign in</button>

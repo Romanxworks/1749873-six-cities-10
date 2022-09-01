@@ -3,7 +3,7 @@ import Header from '../../components/header/header';
 import {useEffect, useState} from 'react';
 import ReviewsForm from '../../components/reviews-form/reviews-form';
 import {RATING_ADAPTER, AppRoute} from '../../const';
-import ReviewOffer from '../../components/review/review';
+import ReviewOffer from '../../components/review-offer/review-offer';
 import Map from '../../components/map/map';
 import CitiesCard from '../../components/cities-card/cities-card';
 import PropertyGallery from '../../components/property-gallery/property-gallery';
